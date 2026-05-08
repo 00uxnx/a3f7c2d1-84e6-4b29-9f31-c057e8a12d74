@@ -1794,7 +1794,7 @@ local exec_textbox = library:create("TextBox", {
     ClearTextOnFocus = false,
     TextWrapped = true,
     ZIndex = 2,
-    TextSize = 12,
+    TextSize = 20,
     BackgroundColor3 = rgb(255, 255, 255),
 })
 
@@ -1809,15 +1809,21 @@ exec_section:button({name = "Execute", callback = function()
     local code = exec_textbox.Text
     if code == "" then return end
 
-    local fn, err = loadstring(code)
-    if fn then
-        local ok, run_err = pcall(fn)
-        if not ok then
-            library:notification({text = "Error: " .. tostring(run_err), time = 5})
+    task.spawn(function()
+        local fn, err = loadstring(code)
+        if not fn then
+            library:notification({text = "Syntax error: " .. tostring(err), time = 5})
+            return
         end
-    else
-        library:notification({text = "Syntax: " .. tostring(err), time = 5})
-    end
+
+        local ok, run_err = xpcall(fn, function(e)
+            return debug.traceback(e, 2)
+        end)
+
+        if not ok then
+            library:notification({text = "Runtime error: " .. tostring(run_err), time = 5})
+        end
+    end)
 end})
 exec_section:button({name = "Clear", callback = function()
     exec_textbox.Text = ""
