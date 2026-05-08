@@ -5562,6 +5562,61 @@
 			return setmetatable(cfg, library)   
 		end 
 
+function library:divider(options)
+    local cfg = {
+        visible = options and options.visible or true,
+        flag = options and options.flag or tostring(random(1, 9999999)),
+    }
+
+    local divider_holder = library:create("TextLabel", {
+        Parent = self.holder,
+        Name = "",
+        FontFace = library.font,
+        TextColor3 = themes.preset.text,
+        BorderColor3 = rgb(0, 0, 0),
+        Text = "",
+        ZIndex = 2,
+        Size = dim2(1, -8, 0, 4),
+        BorderSizePixel = 0,
+        BackgroundTransparency = 1,
+        TextXAlignment = Enum.TextXAlignment.Left,
+        AutomaticSize = Enum.AutomaticSize.Y,
+        TextSize = 12,
+        BackgroundColor3 = rgb(255, 255, 255)
+    })
+
+    local line_outline = library:create("Frame", {
+        Parent = divider_holder,
+        Name = "",
+        AnchorPoint = vec2(0, 0.5),
+        Position = dim2(0, 0, 0.5, 0),
+        BorderColor3 = rgb(0, 0, 0),
+        Size = dim2(1, 0, 0, 2),
+        BorderSizePixel = 0,
+        BackgroundColor3 = themes.preset.outline
+    }) library:apply_theme(line_outline, "outline", "BackgroundColor3")
+
+    local line_inline = library:create("Frame", {
+        Parent = line_outline,
+        Name = "",
+        Position = dim2(0, 1, 0, 0),
+        BorderColor3 = rgb(0, 0, 0),
+        Size = dim2(1, -2, 0, 1),
+        BorderSizePixel = 0,
+        BackgroundColor3 = themes.preset.inline
+    }) library:apply_theme(line_inline, "inline", "BackgroundColor3")
+
+    function cfg.set_element_visible(bool)
+        divider_holder.Visible = bool
+    end
+
+    cfg.set_element_visible(cfg.visible)
+
+    library.visible_flags[cfg.flag] = cfg.set_element_visible
+
+    return setmetatable(cfg, library)
+end
+
 		function library:playerlist(options) 
 			local cfg = {
 				callback = options.callback or function() end, 
