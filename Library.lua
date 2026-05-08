@@ -709,8 +709,6 @@
 						items.sgui.Enabled = false;
 					end)
 
-					--library:apply_theme(main_holder, "outline", "BackgroundColor3") 
-					
 					items.window_inline = library:create("Frame", {
 						Parent = items.main_holder,
 						Name = "",
@@ -1430,7 +1428,6 @@
 					BackgroundColor3 = themes.preset.accent
 				}); library:apply_theme(bg, "accent", "BackgroundColor3")
 				
-				
 				library:create("UIGradient", {
 					Parent = bg,
 					Name = "",
@@ -1482,7 +1479,6 @@
 					Position = dim2(0, 1, 0, 1),
 					BorderColor3 = rgb(0, 0, 0),
 					BorderSizePixel = 0,
-					--AutomaticSize = Enum.AutomaticSize.Y,
 					BackgroundColor3 = themes.preset.inline
 				})
 				library:apply_theme(inline, "inline", "BackgroundColor3")
@@ -1494,7 +1490,6 @@
 					Position = dim2(0, 1, 0, 1),
 					BorderColor3 = rgb(0, 0, 0),
 					BorderSizePixel = 0,
-					--AutomaticSize = Enum.AutomaticSize.Y,
 					BackgroundColor3 = rgb(255, 255, 255)
 				})
 				library.keybind_list = background
@@ -1924,7 +1919,6 @@
 				watermark_outline.Visible = bool
 			end 
 
-
 			cfg.change_text(cfg.default)
 
 			return cfg 
@@ -1953,13 +1947,13 @@
 				items.camera = library:create( "Camera" , {
 					FieldOfView = 70.00022888183594;
 					CameraType = Enum.CameraType.Track;
-					Focus = cfr(0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1); -- bro wtf is this serializer doing
+					Focus = cfr(0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1);
 					CFrame = cfr(0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1);
 					Parent = ws;
 					Name = "\0"
 				}); 
 
-				items.viewportframe.CurrentCamera = items.camera -- sick
+				items.viewportframe.CurrentCamera = items.camera
 				character.Parent = items.viewportframe
 
 				items.camera.CameraSubject = character
@@ -2287,7 +2281,7 @@
 				objects[ "healthbar" ].Size = UDim2.new(1, -2, multiplier, -2)
 				objects[ "healthbar" ].Position = UDim2.new(0, 1, 1 - multiplier, 1)
 				objects[ "healthbar" ].BackgroundColor3 = color
-			end -- wtf why diff func defining
+			end
 
 			function cfg.refresh_elements( )                                
 				objects.holder.Parent = flags["Enabled"] and items.viewportframe or library.cache
@@ -2459,7 +2453,7 @@
 				})
 
 				local index = #library.notifications + 1
-				library.notifications[index] =watermark_outline
+				library.notifications[index] = watermark_outline
 
 				library:refresh_notifications()
 
@@ -2807,7 +2801,6 @@
 						BackgroundColor3 = rgb(255, 255, 255),
 						BorderColor3 = rgb(0, 0, 0),
 						BorderSizePixel = 0,
-						ScrollBarThickness = 2,
 						CanvasSize = dim2(0, 0, 0, 0)
 					}) library:apply_theme(ScrollingFrame, "accent", "ScrollBarImageColor3") 
 					
@@ -3024,7 +3017,7 @@
 					Text = "",
 					Name = "slider",
 					ZIndex = 1,
-					Size = dim2(1, -8, 0, 12),
+					Size = dim2(1, -8, 0, 16), -- bumped from 12
 					BorderSizePixel = 0,
 					BackgroundTransparency = 1,
 					TextXAlignment = Enum.TextXAlignment.Left,
@@ -3263,7 +3256,7 @@
 					Text = "",
 					Name = "toggle",
 					ZIndex = 1,
-					Size = dim2(1, -8, 0, 12),
+					Size = dim2(1, -8, 0, 16), -- bumped from 12
 					BorderSizePixel = 0,
 					BackgroundTransparency = 1,
 					TextXAlignment = Enum.TextXAlignment.Left,
@@ -3276,9 +3269,9 @@
 				local right_components = library:create("Frame", {
 					Parent = toggle_holder,
 					Name = "right_components",
-					Position = dim2(1, -1, 0, 1),
+					Position = dim2(1, -1, 0, 2), -- nudged down 1px
 					BorderColor3 = rgb(0, 0, 0),
-					Size = dim2(0, 0, 0, 12),
+					Size = dim2(0, 0, 0, 14), -- bumped from 12
 					BorderSizePixel = 0,
 					BackgroundColor3 = rgb(255, 255, 255)
 				})
@@ -3302,7 +3295,7 @@
 					Parent = toggle_holder,
 					Name = "left_components",
 					BackgroundTransparency = 1,
-					Position = dim2(0, 0, 0, 0),
+					Position = dim2(0, 0, 0, 1), -- nudged down 1px to center
 					BorderColor3 = rgb(0, 0, 0),
 					Size = dim2(0, 0, 0, 14),
 					BorderSizePixel = 0,
@@ -3451,7 +3444,7 @@
 			local cfg = {
 				name = options.name or "Color", 
 				flag = options.flag or tostring(2^789),
-				color = options.color or color(1, 1, 1), -- Default to white color if not provided
+				color = options.color or color(1, 1, 1),
 				alpha = options.alpha or 1,
 				callback = options.callback or function() end,
 				right_holder = self.right_holder,
@@ -4360,8 +4353,6 @@
 					end
 				end
 
-
-				-- ok bro its 30 april2025.. what is this code from october 2024 💀💀
 				hold_button.MouseButton1Click:Connect(function()
 					cfg.set_mode("hold") 
 					cfg.set_visible(false)
@@ -4471,7 +4462,7 @@
 					Text = "",
 					Name = "dropdown",
 					ZIndex = 2,
-					Size = dim2(1, -8, 0, 12),
+					Size = dim2(1, -8, 0, 16), -- bumped from 12
 					BorderSizePixel = 0,
 					BackgroundTransparency = 1,
 					TextXAlignment = Enum.TextXAlignment.Left,
@@ -4907,7 +4898,6 @@
 
 				scale = options.size or 232, 
 				items = options.items or {"1", "2", "3"}, 
-				-- order = options.order or 1, 
 				placeholdertext = options.placeholder or options.placeholdertext or "search here...",
 				visible = options.visible or true,
 
@@ -4926,7 +4916,7 @@
 					BorderColor3 = rgb(0, 0, 0),
 					Text = "",
 					ZIndex = 2,
-					Size = dim2(1, -8, 0, 12),
+					Size = dim2(1, -8, 0, 16), -- bumped from 12
 					BorderSizePixel = 0,
 					BackgroundTransparency = 1,
 					TextXAlignment = Enum.TextXAlignment.Left,
@@ -5164,7 +5154,7 @@
 					BorderColor3 = rgb(0, 0, 0),
 					Text = "",
 					ZIndex = 2,
-					Size = dim2(1, -8, 0, 12),
+					Size = dim2(1, -8, 0, 16), -- bumped from 12
 					BorderSizePixel = 0,
 					BackgroundTransparency = 1,
 					TextXAlignment = Enum.TextXAlignment.Left,
@@ -5327,7 +5317,7 @@
 				BorderColor3 = rgb(0, 0, 0),
 				Text = "",
 				ZIndex = 2,
-				Size = dim2(1, -8, 0, 12),
+				Size = dim2(1, -8, 0, 16), -- bumped from 12
 				BorderSizePixel = 0,
 				BackgroundTransparency = 1,
 				TextXAlignment = Enum.TextXAlignment.Left,
@@ -5489,7 +5479,7 @@
 				BorderColor3 = rgb(0, 0, 0),
 				Text = "",
 				ZIndex = 2,
-				Size = dim2(1, -8, 0, 12),
+				Size = dim2(1, -8, 0, 16), -- bumped from 12
 				BorderSizePixel = 0,
 				BackgroundTransparency = 1,
 				TextXAlignment = Enum.TextXAlignment.Left,
@@ -5562,60 +5552,60 @@
 			return setmetatable(cfg, library)   
 		end 
 
-function library:divider(options)
-    local cfg = {
-        visible = options and options.visible or true,
-        flag = options and options.flag or tostring(random(1, 9999999)),
-    }
+		function library:divider(options)
+			local cfg = {
+				visible = options and options.visible or true,
+				flag = options and options.flag or tostring(random(1, 9999999)),
+			}
 
-    local divider_holder = library:create("TextLabel", {
-        Parent = self.holder,
-        Name = "",
-        FontFace = library.font,
-        TextColor3 = themes.preset.text,
-        BorderColor3 = rgb(0, 0, 0),
-        Text = "",
-        ZIndex = 2,
-        Size = dim2(1, -8, 0, 4),
-        BorderSizePixel = 0,
-        BackgroundTransparency = 1,
-        TextXAlignment = Enum.TextXAlignment.Left,
-        AutomaticSize = Enum.AutomaticSize.Y,
-        TextSize = 12,
-        BackgroundColor3 = rgb(255, 255, 255)
-    })
+			local divider_holder = library:create("TextLabel", {
+				Parent = self.holder,
+				Name = "",
+				FontFace = library.font,
+				TextColor3 = themes.preset.text,
+				BorderColor3 = rgb(0, 0, 0),
+				Text = "",
+				ZIndex = 2,
+				Size = dim2(1, -8, 0, 8), -- bumped from 4
+				BorderSizePixel = 0,
+				BackgroundTransparency = 1,
+				TextXAlignment = Enum.TextXAlignment.Left,
+				AutomaticSize = Enum.AutomaticSize.Y,
+				TextSize = 12,
+				BackgroundColor3 = rgb(255, 255, 255)
+			})
 
-    local line_outline = library:create("Frame", {
-        Parent = divider_holder,
-        Name = "",
-        AnchorPoint = vec2(0, 0.5),
-        Position = dim2(0, 0, 0.5, 0),
-        BorderColor3 = rgb(0, 0, 0),
-        Size = dim2(1, 0, 0, 2),
-        BorderSizePixel = 0,
-        BackgroundColor3 = themes.preset.outline
-    }) library:apply_theme(line_outline, "outline", "BackgroundColor3")
+			local line_outline = library:create("Frame", {
+				Parent = divider_holder,
+				Name = "",
+				AnchorPoint = vec2(0, 0.5),
+				Position = dim2(0, 0, 0.5, 0),
+				BorderColor3 = rgb(0, 0, 0),
+				Size = dim2(1, 0, 0, 2),
+				BorderSizePixel = 0,
+				BackgroundColor3 = themes.preset.outline
+			}) library:apply_theme(line_outline, "outline", "BackgroundColor3")
 
-    local line_inline = library:create("Frame", {
-        Parent = line_outline,
-        Name = "",
-        Position = dim2(0, 1, 0, 0),
-        BorderColor3 = rgb(0, 0, 0),
-        Size = dim2(1, -2, 0, 1),
-        BorderSizePixel = 0,
-        BackgroundColor3 = themes.preset.inline
-    }) library:apply_theme(line_inline, "inline", "BackgroundColor3")
+			local line_inline = library:create("Frame", {
+				Parent = line_outline,
+				Name = "",
+				Position = dim2(0, 1, 0, 0),
+				BorderColor3 = rgb(0, 0, 0),
+				Size = dim2(1, -2, 0, 1),
+				BorderSizePixel = 0,
+				BackgroundColor3 = themes.preset.inline
+			}) library:apply_theme(line_inline, "inline", "BackgroundColor3")
 
-    function cfg.set_element_visible(bool)
-        divider_holder.Visible = bool
-    end
+			function cfg.set_element_visible(bool)
+				divider_holder.Visible = bool
+			end
 
-    cfg.set_element_visible(cfg.visible)
+			cfg.set_element_visible(cfg.visible)
 
-    library.visible_flags[cfg.flag] = cfg.set_element_visible
+			library.visible_flags[cfg.flag] = cfg.set_element_visible
 
-    return setmetatable(cfg, library)
-end
+			return setmetatable(cfg, library)
+		end
 
 		function library:playerlist(options) 
 			local cfg = {
@@ -5646,7 +5636,7 @@ end
 					BorderColor3 = rgb(0, 0, 0),
 					Text = "",
 					ZIndex = 2,
-					Size = dim2(1, -8, 0, 12),
+					Size = dim2(1, -8, 0, 16), -- bumped from 12
 					BorderSizePixel = 0,
 					BackgroundTransparency = 1,
 					TextXAlignment = Enum.TextXAlignment.Left,
@@ -5814,31 +5804,6 @@ end
 				})
 				library:apply_theme(player_name, "text", "TextColor3") 
 				library:apply_theme(player_name, "accent", "TextColor3") 
-								
-				-- local TextLabel = library:create("TextLabel", {
-				--     Parent = TextButton,
-				--     Name = "",
-				--     FontFace = library.font,
-				--     TextColor3 = themes.preset.text,
-				--     BorderColor3 = rgb(0, 0, 0),
-				--     Text = "None",
-				--     BackgroundTransparency = 1,
-				--     TextXAlignment = Enum.TextXAlignment.Left,
-				--     BorderSizePixel = 0,
-				--     AutomaticSize = Enum.AutomaticSize.Y,
-				--     TextSize = 12,
-				--     BackgroundColor3 = rgb(255, 255, 255)
-				-- })
-								
-				-- local Frame = library:create("Frame", {
-				--     Parent = TextLabel,
-				--     Name = "",
-				--     Position = dim2(0, -10, 0, 0),
-				--     BorderColor3 = rgb(0, 0, 0),
-				--     Size = dim2(0, 1, 0, 12),
-				--     BorderSizePixel = 0,
-				--     BackgroundColor3 = themes.preset.outline
-				-- }) library:apply_theme(main_holder, "outline", "BackgroundColor3") 
 				
 				local priority_text = library:create("TextLabel", {
 					Parent = TextButton,
@@ -5894,7 +5859,6 @@ end
 				path.line = line 
 				path.priority = "Neutral"
 				path.priority_text = priority_text
-				-- library.selected_player = players[tostring(player)]
 				
 				TextButton.MouseButton1Click:Connect(function()
 					if player_name == lp.Name then 
@@ -5981,4 +5945,4 @@ end
 	-- 
 -- 
 
-return library, themes; 
+return library, themes;
