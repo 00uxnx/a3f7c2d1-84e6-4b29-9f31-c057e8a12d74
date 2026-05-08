@@ -1730,8 +1730,8 @@
 local holder = library:panel({
     name = "Executor", 
     size = dim2(0, 500, 0, 375),
-    position = dim2(0, items.main_holder.AbsolutePosition.X + items.main_holder.AbsoluteSize.X + 2, 0, items.main_holder.AbsolutePosition.Y),
-    image = "rbxassetid://5970247016",
+    position = dim2(0, style.items.main_holder.AbsolutePosition.X, 0, style.items.main_holder.AbsolutePosition.Y + style.items.main_holder.AbsoluteSize.Y + 2),
+    image = "rbxassetid://16149179345",
 })
 
 local exec_items = holder.items
@@ -1783,7 +1783,7 @@ local exec_textbox = library:create("TextBox", {
     TextColor3 = themes.preset.text,
     BorderColor3 = rgb(0, 0, 0),
     Text = "",
-    PlaceholderText = "-- type your script here",
+    PlaceholderText = "-- thank you for using comet.wtf",
     Size = dim2(1, -6, 1, -6),
     Position = dim2(0, 3, 0, 3),
     BorderSizePixel = 0,
@@ -1794,7 +1794,7 @@ local exec_textbox = library:create("TextBox", {
     ClearTextOnFocus = false,
     TextWrapped = true,
     ZIndex = 2,
-    TextSize = 20,
+    TextSize = 14,
     BackgroundColor3 = rgb(255, 255, 255),
 })
 
@@ -1842,8 +1842,6 @@ exec_section:button({name = "Open File", callback = function()
     exec_textbox.Text = content
 end})
 exec_section:button({name = "Load from Clipboard", callback = function()
-    -- paste clipboard contents into editor
-    -- note: getclipboard is UNC standard
     local ok, content = pcall(getclipboard)
     if ok and content and content ~= "" then
         exec_textbox.Text = content
