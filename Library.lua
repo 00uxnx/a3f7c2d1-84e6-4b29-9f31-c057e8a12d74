@@ -1228,7 +1228,7 @@
 			local blur = library:create( "BlurEffect" , {
 				Parent = lighting;
 				Enabled = true;
-				Size = 15
+				Size = 7
 			});    
 
 			library.cache = library:create("ScreenGui", {
@@ -1254,7 +1254,7 @@
 					end
 				end
 
-				library:tween(blur, {Size = bool and (flags["Blur Size"] or 15) or 0})
+				library:tween(blur, {Size = bool and (flags["Blur Size"] or 7) or 0})
 
 				dock_outline.Visible = bool;
 
@@ -1638,6 +1638,16 @@
 				local items = style.items
 
 				local column = setmetatable(items, library):column() 
+	            local section = column:section({name = "Settings"})
+	            section:label({name = "UI Bind"})
+				:keybind({callback = window.set_menu_visibility, key = Enum.KeyCode.RightShift})
+				section:toggle({name = "Keybind List", flag = "keybind_list", callback = function(bool)
+					library.keybind_list_frame.Visible = bool
+				end})
+				section:toggle({name = "Watermark", flag = "watermark", callback = function(bool)
+					watermark.set_visible(bool)
+				end})
+	
 				local section = column:section({name = "Theme"})
 				section:label({name = "Accent"})
 				:colorpicker({name = "Accent", color = themes.preset.accent, flag = "accent", callback = function(color, alpha)
@@ -1687,14 +1697,6 @@
 					end
 				end})
 				local section = column:section({name = "Other"})
-				section:label({name = "UI Bind"})
-				:keybind({callback = window.set_menu_visibility, key = Enum.KeyCode.Insert})
-				section:toggle({name = "Keybind List", flag = "keybind_list", callback = function(bool)
-					library.keybind_list_frame.Visible = bool
-				end})
-				section:toggle({name = "Watermark", flag = "watermark", callback = function(bool)
-					watermark.set_visible(bool)
-				end})
 				section:button_holder({})
 				section:button({name = "Copy JobId", callback = function()
 					setclipboard(game.JobId)
@@ -1720,7 +1722,7 @@
 						game:GetService("TeleportService"):TeleportToPlaceInstance(game.PlaceId, data.id)
 					end 
 				end})
-				section:slider({name = "Max Players", flag = "max_players", min = 0, max = 40, default = 15, interval = 1})
+				section:slider({name = "Max Players (for joining new servers)", flag = "max_players", min = 0, max = 40, default = 15, interval = 1})
 			-- 
 
 			-- cfg holder
