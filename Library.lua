@@ -107,12 +107,12 @@
 		preset = {
 			["outline"] = hex("#0A0A0A"), -- 
 			["inline"] = hex("#2D2D2D"), --
-			["accent"] = hex("#6078BE"), --
+			["accent"] = hex("#718ddf"), --
 			["high_contrast"] = hex("#141414"),
 			["low_contrast"] = hex("#1E1E1E"),
 			["text"] = hex("#B4B4B4"),
 			["text_outline"] = rgb(0, 0, 0),
-			["glow"] = hex("#6078BE"), 
+			["glow"] = hex("#728ddf"), 
 		},
 
 		utility = {
@@ -1283,7 +1283,7 @@
 					BorderColor3 = rgb(0, 0, 0),
 					AnchorPoint = vec2(0.5, 0),
 					Position = dim2(0.5, 0, 0, 20),
-					Size = dim2(0, 157, 0, 39),
+					Size = dim2(0, 167, 0, 45),
 					BorderSizePixel = 0,
 					BackgroundColor3 = themes.preset.outline
 				}); 
@@ -1783,6 +1783,7 @@ local exec_textbox = library:create("TextBox", {
     TextColor3 = themes.preset.text,
     BorderColor3 = rgb(0, 0, 0),
     Text = "",
+	RichText = true,
     PlaceholderText = "-- thank you for using comet.wtf",
     Size = dim2(1, -6, 1, -6),
     Position = dim2(0, 3, 0, 3),
@@ -1805,6 +1806,7 @@ library:create("UIStroke", {
 
 -- buttons
 exec_section:button_holder({})
+
 exec_section:button({name = "Execute", callback = function()
     local code = exec_textbox.Text
     if code == "" then return end
@@ -1825,22 +1827,24 @@ exec_section:button({name = "Execute", callback = function()
         end
     end)
 end})
+
 exec_section:button({name = "Clear", callback = function()
     exec_textbox.Text = ""
 end})
+
 exec_section:button_holder({})
+
 exec_section:button({name = "Open File", callback = function()
-    -- lists .lua files from cometwtf/scripts folder
     makefolder("cometwtf/scripts")
     local files = listfiles("cometwtf/scripts")
     if #files == 0 then
         library:notification({text = "No scripts found in cometwtf/scripts", time = 3})
         return
     end
-    -- load first file for now, you can hook this up to a dropdown later
     local content = readfile(files[1])
     exec_textbox.Text = content
 end})
+
 exec_section:button({name = "Load from Clipboard", callback = function()
     local ok, content = pcall(getclipboard)
     if ok and content and content ~= "" then
@@ -1917,6 +1921,7 @@ end})
 					size = dim2(0, 300, 0, 325),
 					position = dim2(0, style.items.main_holder.AbsolutePosition.X, 0, style.items.main_holder.AbsolutePosition.Y + style.items.main_holder.AbsoluteSize.Y + 2),
 					image = "rbxassetid://77684377836328",
+					open = false,
 				})  
 				
 				local items = holder.items
@@ -1932,6 +1937,7 @@ end})
 					size = dim2(0, 529, 0, 445),
 					position = dim2(0, main_window.items.main_holder.AbsolutePosition.X - 531, 0, main_window.items.main_holder.AbsolutePosition.Y),
 					image = "rbxassetid://107070078834415",
+					open = false,
 				})  
 				
 				local items = holder.items
