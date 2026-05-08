@@ -66,6 +66,7 @@
 	local concat = table.concat
 -- 
 
+
 -- library init
 	local library = {
 		directory = "cometwtf",
@@ -1725,6 +1726,126 @@
 				section:slider({name = "Max Players (for joining new servers)", flag = "max_players", min = 0, max = 40, default = 15, interval = 1})
 			-- 
 
+			-- executor holder
+local holder = library:panel({
+    name = "Executor", 
+    size = dim2(0, 500, 0, 375),
+    position = dim2(0, items.main_holder.AbsolutePosition.X + items.main_holder.AbsoluteSize.X + 2, 0, items.main_holder.AbsolutePosition.Y),
+    image = "rbxassetid://5970247016",
+})
+
+local exec_items = holder.items
+local exec_column = setmetatable(exec_items, library):column()
+local exec_section = exec_column:section({name = "Executor"})
+
+-- scrolling textbox frame
+local textbox_outline = library:create("Frame", {
+    Parent = exec_section.holder,
+    BorderColor3 = rgb(0, 0, 0),
+    Size = dim2(1, -8, 0, 200),
+    BorderSizePixel = 0,
+    BackgroundColor3 = themes.preset.outline,
+})
+library:apply_theme(textbox_outline, "outline", "BackgroundColor3")
+
+local textbox_inline = library:create("Frame", {
+    Parent = textbox_outline,
+    Position = dim2(0, 1, 0, 1),
+    BorderColor3 = rgb(0, 0, 0),
+    Size = dim2(1, -2, 1, -2),
+    BorderSizePixel = 0,
+    BackgroundColor3 = themes.preset.inline,
+})
+library:apply_theme(textbox_inline, "inline", "BackgroundColor3")
+
+local textbox_bg = library:create("Frame", {
+    Parent = textbox_inline,
+    Position = dim2(0, 1, 0, 1),
+    BorderColor3 = rgb(0, 0, 0),
+    Size = dim2(1, -2, 1, -2),
+    BorderSizePixel = 0,
+    BackgroundColor3 = rgb(255, 255, 255),
+})
+
+local UIGradient = library:create("UIGradient", {
+    Parent = textbox_bg,
+    Rotation = 90,
+    Color = rgbseq{
+        rgbkey(0, rgb(41, 41, 55)),
+        rgbkey(1, rgb(35, 35, 47))
+    }
+})
+library:apply_theme(UIGradient, "contrast", "Color")
+
+local exec_textbox = library:create("TextBox", {
+    Parent = textbox_bg,
+    FontFace = library.font,
+    TextColor3 = themes.preset.text,
+    BorderColor3 = rgb(0, 0, 0),
+    Text = "",
+    PlaceholderText = "-- type your script here",
+    Size = dim2(1, -6, 1, -6),
+    Position = dim2(0, 3, 0, 3),
+    BorderSizePixel = 0,
+    BackgroundTransparency = 1,
+    TextXAlignment = Enum.TextXAlignment.Left,
+    TextYAlignment = Enum.TextYAlignment.Top,
+    MultiLine = true,
+    ClearTextOnFocus = false,
+    TextWrapped = true,
+    ZIndex = 2,
+    TextSize = 12,
+    BackgroundColor3 = rgb(255, 255, 255),
+})
+
+library:create("UIStroke", {
+    Parent = exec_textbox,
+    LineJoinMode = Enum.LineJoinMode.Miter,
+})
+
+-- buttons
+exec_section:button_holder({})
+exec_section:button({name = "Execute", callback = function()
+    local code = exec_textbox.Text
+    if code == "" then return end
+
+    local fn, err = loadstring(code)
+    if fn then
+        local ok, run_err = pcall(fn)
+        if not ok then
+            library:notification({text = "Error: " .. tostring(run_err), time = 5})
+        end
+    else
+        library:notification({text = "Syntax: " .. tostring(err), time = 5})
+    end
+end})
+exec_section:button({name = "Clear", callback = function()
+    exec_textbox.Text = ""
+end})
+exec_section:button_holder({})
+exec_section:button({name = "Open File", callback = function()
+    -- lists .lua files from cometwtf/scripts folder
+    makefolder("cometwtf/scripts")
+    local files = listfiles("cometwtf/scripts")
+    if #files == 0 then
+        library:notification({text = "No scripts found in cometwtf/scripts", time = 3})
+        return
+    end
+    -- load first file for now, you can hook this up to a dropdown later
+    local content = readfile(files[1])
+    exec_textbox.Text = content
+end})
+exec_section:button({name = "Load from Clipboard", callback = function()
+    -- paste clipboard contents into editor
+    -- note: getclipboard is UNC standard
+    local ok, content = pcall(getclipboard)
+    if ok and content and content ~= "" then
+        exec_textbox.Text = content
+    else
+        library:notification({text = "Clipboard is empty or unavailable", time = 3})
+    end
+end})
+			
 			-- cfg holder
 				local holder = library:panel({
 					name = "Configurations", 
