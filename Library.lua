@@ -1283,7 +1283,7 @@
 					BorderColor3 = rgb(0, 0, 0),
 					AnchorPoint = vec2(0.5, 0),
 					Position = dim2(0.5, 0, 0, 20),
-					Size = dim2(0, 167, 0, 45),
+					Size = dim2(0, 200, 0, 40),
 					BorderSizePixel = 0,
 					BackgroundColor3 = themes.preset.outline
 				}); 
@@ -1729,7 +1729,7 @@
 			-- executor holder
 local holder = library:panel({
     name = "Executor", 
-    size = dim2(0, 500, 0, 375),
+    size = dim2(0, 400, 0, 375),
     position = dim2(0, style.items.main_holder.AbsolutePosition.X, 0, style.items.main_holder.AbsolutePosition.Y + style.items.main_holder.AbsoluteSize.Y + 2),
     image = "rbxassetid://16149179345",
 })
