@@ -603,13 +603,12 @@ function library:executorinit()
 
 		if status == "supported" then
 			table.insert(supported, globalName)
-			EXECUTOR_GLOBALS[globalName] = true
 			if printtestingforglobals then
 				print("✅ " .. globalName .. " is supported")
 			end
 		else
 			table.insert(unsupported, globalName)
-			EXECUTOR_GLOBALS[globalName] = false
+			
 			if printtestingforglobals then
 				print("❌ " .. globalName .. " is unsupported")
 			end
@@ -641,6 +640,8 @@ function library:executorinit()
 		path = filepath
 	}
 end
+
+library:executorinit()
 
 function library:escape_rich(s)
 	s = s:gsub("&", "&amp;")
