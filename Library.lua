@@ -2314,7 +2314,7 @@ highlight_label.TextWrapped = true
 highlight_label.ZIndex = 2
 highlight_label.TextSize = 14
 highlight_label.BackgroundColor3 = rgb(255, 255, 255)
-highlight_label.TextColor3 = themes.preset.textcolor or Color3.fromRGB(238, 255, 255)
+highlight_label.TextColor3 = themes.preset.text or Color3.fromRGB(238, 255, 255)
 
 -- THEME BIND
 library:apply_theme(highlight_label, "textcolor", "TextColor3")
