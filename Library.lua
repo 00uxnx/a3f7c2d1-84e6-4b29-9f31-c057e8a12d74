@@ -86,6 +86,7 @@
 		current_tab, 
 		current_element_open, 
 		dock_button_holder,  
+		lockui,
 		old_config; 
 		font, 
 		keybind_list,
@@ -97,7 +98,7 @@
 		instances = {}; 
 		drawings = {};
 
-		display_orders = 0; 
+		display_orders = 0;
 	}
 
 	local flags = library.flags
@@ -491,6 +492,30 @@
 				end 
 			end 
 		end 
+		
+		function library:setuplockui()
+			if library.lockui then return end 
+
+			local guim = Instance.new("ScreenGui", game.CoreGui)
+			guim.Name = http_service:GenerateGUID(true)
+			guim.DisplayOrder = 100000
+			guim.Enabled = false
+
+			local gui_2 = Instance.new("TextButton", guim)
+			gui_2.BackgroundTransparency = 1
+			gui_2.Text = ""
+			gui_2.Modal = true
+			gui_2.Name = "btn"
+
+			library.lockui = guim
+		end
+
+		function library:mousestuff(value)
+            if library.lockui then
+                library.lockui.Enabled = value == true
+            end
+		end
+		library:setuplockui()
 		
 		function library:round(number, float) 
 			local multiplier = 1 / (float or 1)
@@ -1221,7 +1246,7 @@
 
 			return setmetatable(cfg, library)
 		end     
-
+		
 		function library:window(properties)
 			local window = {opened = true}            
 			local opened = {}
@@ -1240,40 +1265,40 @@
 
 			function window.set_menu_visibility(bool) 
 				window.opened = bool 
-				
 				if bool then 
-					for _,gui in opened do 
-						gui.Enabled = true 
-						opened = {}
+				   for _,gui in opened do 
+					 gui.Enabled = true 
+					  opened = {}
 					end 
 				else
-					for _,gui in library.guis do 
-						if gui.Enabled then 
-							gui.Enabled = false
-							table.insert(opened, gui)
-						end
-					end
-				end
+        for _,gui in library.guis do 
+            if gui.Enabled then 
+                gui.Enabled = false
+                table.insert(opened, gui)
+            end
+        end
+    end
 
-				library:tween(blur, {Size = bool and (flags["Blur Size"] or 7) or 0})
+    library:tween(blur, {Size = bool and (flags["Blur Size"] or 7) or 0})
 
-				dock_outline.Visible = bool;
+    dock_outline.Visible = bool;
+    library:mousestuff(not bool) -- lock UI when menu is hidden, unlock when visible
 
-				sgui.Enabled = true
-				notif_holder.Enabled = true
-				tooltip_sgui.Enabled = true
-				library.cache.Enabled = false
+    sgui.Enabled = true
+    notif_holder.Enabled = true
+    tooltip_sgui.Enabled = true
+    library.cache.Enabled = false
 
-				for _,tooltip in tooltip_sgui:GetChildren() do 
-					tooltip.Visible = false;
-				end 
+    for _,tooltip in tooltip_sgui:GetChildren() do 
+        tooltip.Visible = false;
+    end 
 
-				if library.current_element_open then 
-					library.current_element_open.set_visible(false)
-					library.current_element_open.open = false 
-					library.current_element_open = nil 
-				end
-			end 
+    if library.current_element_open then 
+        library.current_element_open.set_visible(false)
+        library.current_element_open.open = false 
+        library.current_element_open = nil 
+    end
+end
 
 			-- dock init
 				dock_outline = library:create("Frame", {
