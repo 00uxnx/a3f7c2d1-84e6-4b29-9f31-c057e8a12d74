@@ -2278,26 +2278,14 @@ function library:window(properties)
 	})
 	library:apply_theme(textbox_inline, "inline", "BackgroundColor3")
 
-	local textbox_bg = library:create("Frame", {
-		Parent = textbox_inline,
-		Position = dim2(0, 1, 0, 1),
-		BorderColor3 = rgb(0, 0, 0),
-		Size = dim2(1, -2, 1, -2),
-		BorderSizePixel = 0,
-		BackgroundColor3 = rgb(255, 255, 255),
-	})
+	local textbox_bg = Instance.new("Frame")
+	textbox_bg.Parent = textbox_inline
+	textbox_bg.Position = dim2(0, 1, 0, 1)
+	textbox_bg.BorderColor3 = rgb(0, 0, 0)
+	textbox_bg.Size = dim2(1, -2, 1, -2)
+	textbox_bg.BorderSizePixel = 0
+	textbox_bg.BackgroundColor3 = rgb(20, 20, 30)
 
-	local exec_gradient = library:create("UIGradient", {
-		Parent = textbox_bg,
-		Rotation = 90,
-		Color = rgbseq{
-			rgbkey(0, rgb(22, 22, 32)),
-			rgbkey(1, rgb(18, 18, 26))
-		}
-	})
-	library:apply_theme(exec_gradient, "contrast", "Color")
-
-	-- highlight label sits behind the textbox and shows syntax-colored rich text
 	local highlight_label = Instance.new("TextLabel")
 	highlight_label.Parent = textbox_bg
 	highlight_label.FontFace = library.font
@@ -2312,47 +2300,46 @@ function library:window(properties)
 	highlight_label.TextWrapped = true
 	highlight_label.ZIndex = 2
 	highlight_label.TextSize = 12
-	highlight_label.TextColor3 = rgb(238, 255, 255) -- fallback color
+	highlight_label.TextColor3 = rgb(238, 255, 255)
 
-	-- the actual textbox is fully transparent text-wise so highlight_label shows through
-	local exec_textbox = library:create("TextBox", {
-		Parent = textbox_bg,
-		FontFace = library.font,
-		TextColor3 = rgb(238, 255, 255),
-		TextTransparency = 0.999, -- nearly invisible so highlight label shows, but caret/selection still works
-		BorderColor3 = rgb(0, 0, 0),
-		Text = "",
-		PlaceholderText = "-- thank you for using comet.wtf",
-		PlaceholderColor3 = rgb(84, 110, 122),
-		Size = dim2(1, -10, 1, -10),
-		Position = dim2(0, 5, 0, 5),
-		BorderSizePixel = 0,
-		BackgroundTransparency = 1,
-		TextXAlignment = Enum.TextXAlignment.Left,
-		TextYAlignment = Enum.TextYAlignment.Top,
-		MultiLine = true,
-		ClearTextOnFocus = false,
-		TextWrapped = true,
-		ZIndex = 4,
-		TextSize = 12,
-		BackgroundColor3 = rgb(255, 255, 255),
-	})
-
-	library:create("UIStroke", {
-		Parent = exec_textbox,
-		LineJoinMode = Enum.LineJoinMode.Miter,
-	})
+	local exec_textbox = Instance.new("TextBox")
+	exec_textbox.Parent = textbox_bg
+	exec_textbox.FontFace = library.font
+	exec_textbox.TextColor3 = rgb(238, 255, 255)
+	exec_textbox.TextTransparency = 0
+	exec_textbox.BorderColor3 = rgb(0, 0, 0)
+	exec_textbox.Text = ""
+	exec_textbox.PlaceholderText = "-- thank you for using comet.wtf"
+	exec_textbox.PlaceholderColor3 = rgb(84, 110, 122)
+	exec_textbox.Size = dim2(1, -10, 1, -10)
+	exec_textbox.Position = dim2(0, 5, 0, 5)
+	exec_textbox.BorderSizePixel = 0
+	exec_textbox.BackgroundTransparency = 1
+	exec_textbox.TextXAlignment = Enum.TextXAlignment.Left
+	exec_textbox.TextYAlignment = Enum.TextYAlignment.Top
+	exec_textbox.MultiLine = true
+	exec_textbox.ClearTextOnFocus = false
+	exec_textbox.TextWrapped = true
+	exec_textbox.ZIndex = 4
+	exec_textbox.TextSize = 12
 
 	exec_textbox:GetPropertyChangedSignal("Text"):Connect(function()
 		local src = exec_textbox.Text
 		if src == "" then
 			highlight_label.Text = ""
+			exec_textbox.TextTransparency = 0
 			return
 		end
 		local ok, result = pcall(function()
 			return library:tokenize(src)
 		end)
-		highlight_label.Text = ok and result or library:escape_rich(src)
+		if ok and result then
+			highlight_label.Text = result
+			exec_textbox.TextTransparency = 0.999
+		else
+			highlight_label.Text = ""
+			exec_textbox.TextTransparency = 0
+		end
 	end)
 
 	exec_section:button_holder({})
@@ -2392,6 +2379,7 @@ function library:window(properties)
 		callback = function()
 			exec_textbox.Text = ""
 			highlight_label.Text = ""
+			exec_textbox.TextTransparency = 0
 		end
 	})
 
