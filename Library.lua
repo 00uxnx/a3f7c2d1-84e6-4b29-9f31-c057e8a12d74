@@ -2317,7 +2317,7 @@ highlight_label.BackgroundColor3 = rgb(255, 255, 255)
 highlight_label.TextColor3 = themes.preset.text or Color3.fromRGB(238, 255, 255)
 
 -- THEME BIND
-library:apply_theme(highlight_label, "textcolor", "TextColor3")
+library:apply_theme(highlight_label, "text", "TextColor3")
 
 -- actual textbox
 local exec_textbox = library:create("TextBox", {
@@ -2328,7 +2328,7 @@ local exec_textbox = library:create("TextBox", {
 	BorderColor3 = rgb(0, 0, 0),
 	Text = "",
 	PlaceholderText = "-- thank you for using comet.wtf",
-	PlaceholderColor3 = themes.preset.textcolor,
+	PlaceholderColor3 = themes.preset.text,
 	Size = dim2(1, -6, 1, -6),
 	Position = dim2(0, 3, 0, 3),
 	BorderSizePixel = 0,
@@ -2344,7 +2344,7 @@ local exec_textbox = library:create("TextBox", {
 })
 
 -- THEME BIND
-library:apply_theme(exec_textbox, "textcolor", "PlaceholderColor3")
+library:apply_theme(exec_textbox, "text", "PlaceholderColor3")
 
 library:create("UIStroke", {
 	Parent = exec_textbox,
