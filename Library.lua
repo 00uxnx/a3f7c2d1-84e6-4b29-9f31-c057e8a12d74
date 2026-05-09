@@ -2242,7 +2242,7 @@ function library:window(properties)
 	section:slider({name = "Max Players (for joining new servers)", flag = "max_players", min = 0, max = 40, default = 15, interval = 1})
 	-- 
 
-	-- executor holder
+-- executor holder
 local exec_holder = library:panel({
 	name = "Executor", 
 	size = dim2(0, 150, 0, 125),
@@ -2288,6 +2288,7 @@ local textbox_bg = library:create("Frame", {
 	BackgroundColor3 = rgb(255, 255, 255),
 })
 
+-- gradient
 local exec_gradient = library:create("UIGradient", {
 	Parent = textbox_bg,
 	Rotation = 90,
@@ -2298,7 +2299,7 @@ local exec_gradient = library:create("UIGradient", {
 })
 library:apply_theme(exec_gradient, "contrast", "Color")
 
--- highlight label (renders syntax highlighted text)
+-- highlight label
 local highlight_label = Instance.new("TextLabel")
 highlight_label.Parent = textbox_bg
 highlight_label.FontFace = library.font
@@ -2313,22 +2314,21 @@ highlight_label.TextYAlignment = Enum.TextYAlignment.Top
 highlight_label.TextWrapped = true
 highlight_label.ZIndex = 2
 highlight_label.TextSize = 14
-highlight_label.BackgroundColor3 = rgb(255, 255, 255)
-highlight_label.TextColor3 = themes.preset.text or Color3.fromRGB(238, 255, 255)
+highlight_label.TextColor3 = Color3.fromRGB(180, 180, 180)
 
--- THEME BIND
+-- theme bind (correct)
 library:apply_theme(highlight_label, "text", "TextColor3")
 
--- actual textbox
+-- textbox
 local exec_textbox = library:create("TextBox", {
 	Parent = textbox_bg,
 	FontFace = library.font,
-	TextColor3 = rgb(238, 255, 255),
+	TextColor3 = Color3.fromRGB(238, 255, 255),
 	TextTransparency = 1,
 	BorderColor3 = rgb(0, 0, 0),
 	Text = "",
 	PlaceholderText = "-- thank you for using comet.wtf",
-	PlaceholderColor3 = themes.preset.text,
+	PlaceholderColor3 = Color3.fromRGB(180, 180, 180),
 	Size = dim2(1, -6, 1, -6),
 	Position = dim2(0, 3, 0, 3),
 	BorderSizePixel = 0,
@@ -2340,18 +2340,18 @@ local exec_textbox = library:create("TextBox", {
 	TextWrapped = true,
 	ZIndex = 4,
 	TextSize = 14,
-	BackgroundColor3 = rgb(255, 255, 255),
 })
 
--- THEME BIND
+-- theme bind (correct)
 library:apply_theme(exec_textbox, "text", "PlaceholderColor3")
 
+-- stroke
 library:create("UIStroke", {
 	Parent = exec_textbox,
 	LineJoinMode = Enum.LineJoinMode.Miter,
 })
 
--- syntax highlight updater
+-- syntax highlight
 exec_textbox:GetPropertyChangedSignal("Text"):Connect(function()
 	local ok, result = pcall(function()
 		return library:tokenize(exec_textbox.Text)
@@ -2359,88 +2359,6 @@ exec_textbox:GetPropertyChangedSignal("Text"):Connect(function()
 
 	highlight_label.Text = ok and result or library:escape_rich(exec_textbox.Text)
 end)
-
--- buttons
-exec_section:button_holder({})
-
-exec_section:button({
-	name = "Execute",
-	callback = function()
-		local code = exec_textbox.Text
-		if code == "" then
-			return
-		end
-
-		task.spawn(function()
-			local fn, err = loadstring(code)
-
-			if not fn then
-				library:notification({
-					text = "Syntax error: " .. tostring(err),
-					time = 5
-				})
-				return
-			end
-
-			local ok, run_err = xpcall(fn, function(e)
-				return debug.traceback(e, 2)
-			end)
-
-			if not ok then
-				library:notification({
-					text = "Runtime error: " .. tostring(run_err),
-					time = 5
-				})
-			end
-		end)
-	end
-})
-
-exec_section:button({
-	name = "Clear",
-	callback = function()
-		exec_textbox.Text = ""
-		highlight_label.Text = ""
-	end
-})
-
-exec_section:button_holder({})
-
-exec_section:button({
-	name = "Open File",
-	callback = function()
-		makefolder("cometwtf/scripts")
-
-		local files = listfiles("cometwtf/scripts")
-
-		if #files == 0 then
-			library:notification({
-				text = "No scripts found in cometwtf/scripts",
-				time = 3
-			})
-			return
-		end
-
-		local content = readfile(files[1])
-		exec_textbox.Text = content
-	end
-})
-
-exec_section:button({
-	name = "Load from Clipboard",
-	callback = function()
-		local ok, content = pcall(getclipboard)
-
-		if ok and content and content ~= "" then
-			exec_textbox.Text = content
-		else
-			library:notification({
-				text = "Clipboard is empty or unavailable",
-				time = 3
-			})
-		end
-	end
-})
 
 	-- cfg holder
 	local holder = library:panel({
