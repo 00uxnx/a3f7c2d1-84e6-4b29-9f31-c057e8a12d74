@@ -2243,121 +2243,142 @@ function library:window(properties)
 	-- 
 
 	-- executor holder
-	local exec_holder = library:panel({
-		name = "Executor", 
-		size = dim2(0, 150, 0, 125),
-		position = dim2(0, style.items.main_holder.AbsolutePosition.X, 0, style.items.main_holder.AbsolutePosition.Y + style.items.main_holder.AbsoluteSize.Y + 2),
-		image = "rbxassetid://16149179345",
-	})
+local exec_holder = library:panel({
+	name = "Executor", 
+	size = dim2(0, 150, 0, 125),
+	position = dim2(
+		0,
+		style.items.main_holder.AbsolutePosition.X,
+		0,
+		style.items.main_holder.AbsolutePosition.Y + style.items.main_holder.AbsoluteSize.Y + 2
+	),
+	image = "rbxassetid://16149179345",
+})
 
-	local exec_items = exec_holder.items
-	local exec_column = setmetatable(exec_items, library):column()
-	local exec_section = exec_column:section({name = "Executor"})
+local exec_items = exec_holder.items
+local exec_column = setmetatable(exec_items, library):column()
+local exec_section = exec_column:section({name = "Executor"})
 
-	-- textbox frame
-	local textbox_outline = library:create("Frame", {
-		Parent = exec_section.holder,
-		BorderColor3 = rgb(0, 0, 0),
-		Size = dim2(1, -8, 0, 200),
-		BorderSizePixel = 0,
-		BackgroundColor3 = themes.preset.outline,
-	})
-	library:apply_theme(textbox_outline, "outline", "BackgroundColor3")
+-- textbox frame
+local textbox_outline = library:create("Frame", {
+	Parent = exec_section.holder,
+	BorderColor3 = rgb(0, 0, 0),
+	Size = dim2(1, -8, 0, 200),
+	BorderSizePixel = 0,
+	BackgroundColor3 = themes.preset.outline,
+})
+library:apply_theme(textbox_outline, "outline", "BackgroundColor3")
 
-	local textbox_inline = library:create("Frame", {
-		Parent = textbox_outline,
-		Position = dim2(0, 1, 0, 1),
-		BorderColor3 = rgb(0, 0, 0),
-		Size = dim2(1, -2, 1, -2),
-		BorderSizePixel = 0,
-		BackgroundColor3 = themes.preset.inline,
-	})
-	library:apply_theme(textbox_inline, "inline", "BackgroundColor3")
+local textbox_inline = library:create("Frame", {
+	Parent = textbox_outline,
+	Position = dim2(0, 1, 0, 1),
+	BorderColor3 = rgb(0, 0, 0),
+	Size = dim2(1, -2, 1, -2),
+	BorderSizePixel = 0,
+	BackgroundColor3 = themes.preset.inline,
+})
+library:apply_theme(textbox_inline, "inline", "BackgroundColor3")
 
-	local textbox_bg = library:create("Frame", {
-		Parent = textbox_inline,
-		Position = dim2(0, 1, 0, 1),
-		BorderColor3 = rgb(0, 0, 0),
-		Size = dim2(1, -2, 1, -2),
-		BorderSizePixel = 0,
-		BackgroundColor3 = rgb(255, 255, 255),
-	})
+local textbox_bg = library:create("Frame", {
+	Parent = textbox_inline,
+	Position = dim2(0, 1, 0, 1),
+	BorderColor3 = rgb(0, 0, 0),
+	Size = dim2(1, -2, 1, -2),
+	BorderSizePixel = 0,
+	BackgroundColor3 = rgb(255, 255, 255),
+})
 
-	local exec_gradient = library:create("UIGradient", {
-		Parent = textbox_bg,
-		Rotation = 90,
-		Color = rgbseq{
-			rgbkey(0, rgb(41, 41, 55)),
-			rgbkey(1, rgb(35, 35, 47))
-		}
-	})
-	library:apply_theme(exec_gradient, "contrast", "Color")
+local exec_gradient = library:create("UIGradient", {
+	Parent = textbox_bg,
+	Rotation = 90,
+	Color = rgbseq{
+		rgbkey(0, rgb(41, 41, 55)),
+		rgbkey(1, rgb(35, 35, 47))
+	}
+})
+library:apply_theme(exec_gradient, "contrast", "Color")
 
-	-- highlight label (behind textbox, renders colored richtext)
-	local highlight_label = Instance.new("TextLabel")
-	highlight_label.Parent = textbox_bg
-	highlight_label.FontFace = library.font
-	highlight_label.RichText = true
-	highlight_label.Text = ""
-	highlight_label.Size = dim2(1, -6, 1, -6)
-	highlight_label.Position = dim2(0, 3, 0, 3)
-	highlight_label.BorderSizePixel = 0
-	highlight_label.BackgroundTransparency = 1
-	highlight_label.TextXAlignment = Enum.TextXAlignment.Left
-	highlight_label.TextYAlignment = Enum.TextYAlignment.Top
-	highlight_label.TextWrapped = true
-	highlight_label.ZIndex = 2
-	highlight_label.TextSize = 14
-	highlight_label.BackgroundColor3 = rgb(255, 255, 255)
-	highlight_label.TextColor3 = rgb(238, 255, 255)
+-- highlight label (renders syntax highlighted text)
+local highlight_label = Instance.new("TextLabel")
+highlight_label.Parent = textbox_bg
+highlight_label.FontFace = library.font
+highlight_label.RichText = true
+highlight_label.Text = ""
+highlight_label.Size = dim2(1, -6, 1, -6)
+highlight_label.Position = dim2(0, 3, 0, 3)
+highlight_label.BorderSizePixel = 0
+highlight_label.BackgroundTransparency = 1
+highlight_label.TextXAlignment = Enum.TextXAlignment.Left
+highlight_label.TextYAlignment = Enum.TextYAlignment.Top
+highlight_label.TextWrapped = true
+highlight_label.ZIndex = 2
+highlight_label.TextSize = 14
+highlight_label.BackgroundColor3 = rgb(255, 255, 255)
+highlight_label.TextColor3 = themes.preset.textcolor
 
-	-- actual textbox (transparent text, on top for input)
-	local exec_textbox = library:create("TextBox", {
-		Parent = textbox_bg,
-		FontFace = library.font,
-		TextColor3 = rgb(238, 255, 255),
-		TextTransparency = 1,
-		BorderColor3 = rgb(0, 0, 0),
-		Text = "",
-		PlaceholderText = "-- thank you for using comet.wtf",
-		Size = dim2(1, -6, 1, -6),
-		Position = dim2(0, 3, 0, 3),
-		BorderSizePixel = 0,
-		BackgroundTransparency = 1,
-		TextXAlignment = Enum.TextXAlignment.Left,
-		TextYAlignment = Enum.TextYAlignment.Top,
-		MultiLine = true,
-		ClearTextOnFocus = false,
-		TextWrapped = true,
-		ZIndex = 4,
-		TextSize = 14,
-		BackgroundColor3 = rgb(255, 255, 255),
-	})
+-- THEME BIND
+library:apply_theme(highlight_label, "textcolor", "TextColor3")
 
-	library:create("UIStroke", {
-		Parent = exec_textbox,
-		LineJoinMode = Enum.LineJoinMode.Miter,
-	})
+-- actual textbox
+local exec_textbox = library:create("TextBox", {
+	Parent = textbox_bg,
+	FontFace = library.font,
+	TextColor3 = rgb(238, 255, 255),
+	TextTransparency = 1,
+	BorderColor3 = rgb(0, 0, 0),
+	Text = "",
+	PlaceholderText = "-- thank you for using comet.wtf",
+	PlaceholderColor3 = themes.preset.textcolor,
+	Size = dim2(1, -6, 1, -6),
+	Position = dim2(0, 3, 0, 3),
+	BorderSizePixel = 0,
+	BackgroundTransparency = 1,
+	TextXAlignment = Enum.TextXAlignment.Left,
+	TextYAlignment = Enum.TextYAlignment.Top,
+	MultiLine = true,
+	ClearTextOnFocus = false,
+	TextWrapped = true,
+	ZIndex = 4,
+	TextSize = 14,
+	BackgroundColor3 = rgb(255, 255, 255),
+})
 
-	-- wire tokenizer to highlight label
-	exec_textbox:GetPropertyChangedSignal("Text"):Connect(function()
-		local ok, result = pcall(function()
-			return library:tokenize(exec_textbox.Text)
-		end)
-		highlight_label.Text = ok and result or library:escape_rich(exec_textbox.Text)
+-- THEME BIND
+library:apply_theme(exec_textbox, "textcolor", "PlaceholderColor3")
+
+library:create("UIStroke", {
+	Parent = exec_textbox,
+	LineJoinMode = Enum.LineJoinMode.Miter,
+})
+
+-- syntax highlight updater
+exec_textbox:GetPropertyChangedSignal("Text"):Connect(function()
+	local ok, result = pcall(function()
+		return library:tokenize(exec_textbox.Text)
 	end)
 
-	-- buttons
-	exec_section:button_holder({})
+	highlight_label.Text = ok and result or library:escape_rich(exec_textbox.Text)
+end)
 
-	exec_section:button({name = "Execute", callback = function()
+-- buttons
+exec_section:button_holder({})
+
+exec_section:button({
+	name = "Execute",
+	callback = function()
 		local code = exec_textbox.Text
-		if code == "" then return end
+		if code == "" then
+			return
+		end
 
 		task.spawn(function()
 			local fn, err = loadstring(code)
+
 			if not fn then
-				library:notification({text = "Syntax error: " .. tostring(err), time = 5})
+				library:notification({
+					text = "Syntax error: " .. tostring(err),
+					time = 5
+				})
 				return
 			end
 
@@ -2366,37 +2387,60 @@ function library:window(properties)
 			end)
 
 			if not ok then
-				library:notification({text = "Runtime error: " .. tostring(run_err), time = 5})
+				library:notification({
+					text = "Runtime error: " .. tostring(run_err),
+					time = 5
+				})
 			end
 		end)
-	end})
+	end
+})
 
-	exec_section:button({name = "Clear", callback = function()
+exec_section:button({
+	name = "Clear",
+	callback = function()
 		exec_textbox.Text = ""
 		highlight_label.Text = ""
-	end})
+	end
+})
 
-	exec_section:button_holder({})
+exec_section:button_holder({})
 
-	exec_section:button({name = "Open File", callback = function()
+exec_section:button({
+	name = "Open File",
+	callback = function()
 		makefolder("cometwtf/scripts")
+
 		local files = listfiles("cometwtf/scripts")
+
 		if #files == 0 then
-			library:notification({text = "No scripts found in cometwtf/scripts", time = 3})
+			library:notification({
+				text = "No scripts found in cometwtf/scripts",
+				time = 3
+			})
 			return
 		end
+
 		local content = readfile(files[1])
 		exec_textbox.Text = content
-	end})
+	end
+})
 
-	exec_section:button({name = "Load from Clipboard", callback = function()
+exec_section:button({
+	name = "Load from Clipboard",
+	callback = function()
 		local ok, content = pcall(getclipboard)
+
 		if ok and content and content ~= "" then
 			exec_textbox.Text = content
 		else
-			library:notification({text = "Clipboard is empty or unavailable", time = 3})
+			library:notification({
+				text = "Clipboard is empty or unavailable",
+				time = 3
+			})
 		end
-	end})
+	end
+})
 
 	-- cfg holder
 	local holder = library:panel({
