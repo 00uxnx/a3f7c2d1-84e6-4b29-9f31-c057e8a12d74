@@ -1308,7 +1308,7 @@ end
 					BorderColor3 = rgb(0, 0, 0),
 					AnchorPoint = vec2(0.5, 0),
 					Position = dim2(0.5, 0, 0, 20),
-					Size = dim2(0, 185, 0, 40),
+					Size = dim2(0, 195, 0, 40),
 					BorderSizePixel = 0,
 					BackgroundColor3 = themes.preset.outline
 				}); 
@@ -1752,9 +1752,9 @@ end
 			-- 
 
 			-- executor holder
-local holder = library:panel({
+			local holder = library:panel({
     name = "Executor", 
-    size = dim2(0, 400, 0, 375),
+    size = dim2(0, 250, 0, 450),
     position = dim2(0, style.items.main_holder.AbsolutePosition.X, 0, style.items.main_holder.AbsolutePosition.Y + style.items.main_holder.AbsoluteSize.Y + 2),
     image = "rbxassetid://16149179345",
 })
@@ -1944,10 +1944,10 @@ end})
 					name = "ESP Preview", 
 					anchor_point = vec2(0, 0),
 					size = dim2(0, 300, 0, 325),
-					position = dim2(0, style.items.main_holder.AbsolutePosition.X, 0, style.items.main_holder.AbsolutePosition.Y + style.items.main_holder.AbsoluteSize.Y + 2),
+					position = dim2(0, main_window.items.main_holder.AbsolutePosition.X - 531, 0, main_window.items.main_holder.AbsolutePosition.Y + 445 + 2),
 					image = "rbxassetid://77684377836328",
 					open = false,
-				})  
+				})
 				
 				local items = holder.items
 				
@@ -2084,44 +2084,43 @@ end})
 		end 
 
 		function library:esp_preview(properties)
-			local cfg = {items = {}, rotation = 0; objects = {};}
+    local cfg = {items = {}, rotation = 0; objects = {};}
 
-			lp.Character.Archivable = true
-			local character = lp.Character:Clone()
-			character.Animate:Destroy()
+    lp.Character.Archivable = true
+    local character = lp.Character:Clone()
+    character.Animate:Destroy()
 
-			local items = cfg.items; do 
-				items.viewportframe = library:create( "ViewportFrame" , {
-					Parent = self.holder;
-					BackgroundTransparency = 1;
-					Size = dim2(1, 0, 0, 220);
-					BorderColor3 = rgb(0, 0, 0);
-					ZIndex = 1;
-					Position = dim2(0, 0, 0, 10);
-					BorderSizePixel = 0;
-					BackgroundColor3 = rgb(255, 255, 255)
-				});
-				
-				items.camera = library:create( "Camera" , {
-					FieldOfView = 70.00022888183594;
-					CameraType = Enum.CameraType.Track;
-					Focus = cfr(0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1);
-					CFrame = cfr(0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1);
-					Parent = ws;
-					Name = "\0"
-				}); 
+    local items = cfg.items; do 
+        items.viewportframe = library:create("ViewportFrame", {
+            Parent = self.holder;
+            BackgroundTransparency = 1;
+            Size = dim2(1, 0, 0, 220);
+            BorderColor3 = rgb(0, 0, 0);
+            ZIndex = 1;
+            Position = dim2(0, 0, 0, 10);  -- fixed: was dim2(0,0,0,10) causing offset
+            BorderSizePixel = 0;
+            BackgroundColor3 = rgb(255, 255, 255)
+        });
 
-				items.viewportframe.CurrentCamera = items.camera
-				character.Parent = items.viewportframe
+        items.camera = Instance.new("Camera")
+        items.camera.FieldOfView = 70
+        items.camera.CameraType = Enum.CameraType.Custom
 
-				items.camera.CameraSubject = character
+        items.viewportframe.CurrentCamera = items.camera
+        character.Parent = items.viewportframe
 
-				library:connection(run.RenderStepped, function()
-					task.wait()
-					cfg.rotation += 0.5
-					character:SetPrimaryPartCFrame(cfr(Vector3.new(0, 1, -6)) * angle(0, math.rad(cfg.rotation), 0))
-				end)
-			end 
+        -- position camera to look at character properly
+        items.camera.CFrame = CFrame.new(Vector3.new(0, 3, 8), Vector3.new(0, 3, 0))
+
+        library:connection(run.RenderStepped, function()
+            cfg.rotation += 0.5
+            if character and character.PrimaryPart then
+                character:SetPrimaryPartCFrame(
+                    CFrame.new(Vector3.new(0, 0, 0)) * CFrame.Angles(0, math.rad(cfg.rotation), 0)
+                )
+            end
+        end)
+    end
 
 			local objects = cfg.objects; do 
 				objects[ "holder" ] = library:create( "Frame" , {
