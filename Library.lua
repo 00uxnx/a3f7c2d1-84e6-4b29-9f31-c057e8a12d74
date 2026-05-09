@@ -1308,7 +1308,7 @@ end
 					BorderColor3 = rgb(0, 0, 0),
 					AnchorPoint = vec2(0.5, 0),
 					Position = dim2(0.5, 0, 0, 20),
-					Size = dim2(0, 200, 0, 40),
+					Size = dim2(0, 185, 0, 40),
 					BorderSizePixel = 0,
 					BackgroundColor3 = themes.preset.outline
 				}); 
