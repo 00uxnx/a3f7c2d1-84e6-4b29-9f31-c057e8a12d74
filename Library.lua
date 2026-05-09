@@ -1,5 +1,5 @@
 -- a dumbass leaked source so i edited ( COMET EDITION )
-print("using lib version 2.0")
+print("using lib version 2.1")
 -- variables
 local uis = cloneref(game:GetService("UserInputService"))
 local players = cloneref(game:GetService("Players"))
