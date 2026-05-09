@@ -1,5 +1,5 @@
 -- a dumbass leaked source so i edited ( COMET EDITION )
-print("using lib version 2.1")
+
 -- variables
 local uis = cloneref(game:GetService("UserInputService"))
 local players = cloneref(game:GetService("Players"))
@@ -1799,7 +1799,7 @@ function library:window(properties)
 		BorderColor3 = rgb(0, 0, 0),
 		AnchorPoint = vec2(0.5, 0),
 		Position = dim2(0.5, 0, 0, 20),
-		Size = dim2(0, 190, 0, 40),
+		Size = dim2(0, 186, 0, 40),
 		BorderSizePixel = 0,
 		BackgroundColor3 = themes.preset.outline
 	}); 
@@ -2243,182 +2243,194 @@ function library:window(properties)
 	-- 
 
 	-- executor holder
-local exec_holder = library:panel({
-    name = "Executor",
-    size = dim2(0, 530, 0, 380),
-    position = dim2(
-        0,
-        style.items.main_holder.AbsolutePosition.X,
-        0,
-        style.items.main_holder.AbsolutePosition.Y + style.items.main_holder.AbsoluteSize.Y + 2
-    ),
-    image = "rbxassetid://16149179345",
-})
+	local exec_holder = library:panel({
+		name = "Executor",
+		size = dim2(0, 530, 0, 380),
+		position = dim2(
+			0,
+			style.items.main_holder.AbsolutePosition.X,
+			0,
+			style.items.main_holder.AbsolutePosition.Y + style.items.main_holder.AbsoluteSize.Y + 2
+		),
+		image = "rbxassetid://10110319522",
+	})
 
-local exec_items = exec_holder.items
-local exec_column = setmetatable(exec_items, library):column()
-local exec_section = exec_column:section({ name = "Executor" })
+	local exec_items = exec_holder.items
+	local exec_column = setmetatable(exec_items, library):column()
+	local exec_section = exec_column:section({ name = "Executor" })
 
-local textbox_outline = library:create("Frame", {
-    Parent = exec_section.holder,
-    BorderColor3 = rgb(0, 0, 0),
-    Size = dim2(1, -8, 0, 200),
-    BorderSizePixel = 0,
-    BackgroundColor3 = themes.preset.outline,
-})
-library:apply_theme(textbox_outline, "outline", "BackgroundColor3")
+	local textbox_outline = library:create("Frame", {
+		Parent = exec_section.holder,
+		BorderColor3 = rgb(0, 0, 0),
+		Size = dim2(1, -8, 0, 200),
+		BorderSizePixel = 0,
+		BackgroundColor3 = themes.preset.outline,
+	})
+	library:apply_theme(textbox_outline, "outline", "BackgroundColor3")
 
-local textbox_inline = library:create("Frame", {
-    Parent = textbox_outline,
-    Position = dim2(0, 1, 0, 1),
-    BorderColor3 = rgb(0, 0, 0),
-    Size = dim2(1, -2, 1, -2),
-    BorderSizePixel = 0,
-    BackgroundColor3 = themes.preset.inline,
-})
-library:apply_theme(textbox_inline, "inline", "BackgroundColor3")
+	local textbox_inline = library:create("Frame", {
+		Parent = textbox_outline,
+		Position = dim2(0, 1, 0, 1),
+		BorderColor3 = rgb(0, 0, 0),
+		Size = dim2(1, -2, 1, -2),
+		BorderSizePixel = 0,
+		BackgroundColor3 = themes.preset.inline,
+	})
+	library:apply_theme(textbox_inline, "inline", "BackgroundColor3")
 
-local textbox_bg = Instance.new("Frame")
-textbox_bg.Parent = textbox_inline
-textbox_bg.Position = dim2(0, 1, 0, 1)
-textbox_bg.BorderColor3 = rgb(0, 0, 0)
-textbox_bg.Size = dim2(1, -2, 1, -2)
-textbox_bg.BorderSizePixel = 0
-textbox_bg.BackgroundColor3 = rgb(20, 20, 30)
+	local textbox_bg = library:create("Frame", {
+		Parent = textbox_inline,
+		Position = dim2(0, 1, 0, 1),
+		BorderColor3 = rgb(0, 0, 0),
+		Size = dim2(1, -2, 1, -2),
+		BorderSizePixel = 0,
+		BackgroundColor3 = rgb(255, 255, 255),
+	})
 
-local highlight_label = Instance.new("TextLabel")
-highlight_label.Parent = textbox_bg
-highlight_label.FontFace = library.font
-highlight_label.RichText = true
-highlight_label.Text = ""
-highlight_label.Size = dim2(1, -10, 1, -10)
-highlight_label.Position = dim2(0, 5, 0, 5)
-highlight_label.BorderSizePixel = 0
-highlight_label.BackgroundTransparency = 1
-highlight_label.TextXAlignment = Enum.TextXAlignment.Left
-highlight_label.TextYAlignment = Enum.TextYAlignment.Top
-highlight_label.TextWrapped = true
-highlight_label.ZIndex = 2
-highlight_label.TextSize = 12
-highlight_label.TextColor3 = rgb(238, 255, 255)
+	local exec_gradient = library:create("UIGradient", {
+		Parent = textbox_bg,
+		Rotation = 90,
+		Color = rgbseq{
+			rgbkey(0, rgb(22, 22, 32)),
+			rgbkey(1, rgb(18, 18, 26))
+		}
+	})
+	library:apply_theme(exec_gradient, "contrast", "Color")
 
-local exec_textbox = Instance.new("TextBox")
-exec_textbox.Parent = textbox_bg
-exec_textbox.FontFace = library.font
-exec_textbox.TextColor3 = rgb(238, 255, 255)
-exec_textbox.TextTransparency = 0
-exec_textbox.BorderColor3 = rgb(0, 0, 0)
-exec_textbox.Text = ""
-exec_textbox.PlaceholderText = "-- thank you for using comet.wtf"
-exec_textbox.PlaceholderColor3 = rgb(84, 110, 122)
-exec_textbox.Size = dim2(1, -10, 1, -10)
-exec_textbox.Position = dim2(0, 5, 0, 5)
-exec_textbox.BorderSizePixel = 0
-exec_textbox.BackgroundTransparency = 1
-exec_textbox.TextXAlignment = Enum.TextXAlignment.Left
-exec_textbox.TextYAlignment = Enum.TextYAlignment.Top
-exec_textbox.MultiLine = true
-exec_textbox.ClearTextOnFocus = false
-exec_textbox.TextWrapped = true
-exec_textbox.ZIndex = 4
-exec_textbox.TextSize = 12
+	-- highlight label sits behind the textbox and shows syntax-colored rich text
+	local highlight_label = Instance.new("TextLabel")
+	highlight_label.Parent = textbox_bg
+	highlight_label.FontFace = library.font
+	highlight_label.RichText = true
+	highlight_label.Text = ""
+	highlight_label.Size = dim2(1, -10, 1, -10)
+	highlight_label.Position = dim2(0, 5, 0, 5)
+	highlight_label.BorderSizePixel = 0
+	highlight_label.BackgroundTransparency = 1
+	highlight_label.TextXAlignment = Enum.TextXAlignment.Left
+	highlight_label.TextYAlignment = Enum.TextYAlignment.Top
+	highlight_label.TextWrapped = true
+	highlight_label.ZIndex = 2
+	highlight_label.TextSize = 12
+	highlight_label.TextColor3 = rgb(238, 255, 255) -- fallback color
 
-exec_textbox:GetPropertyChangedSignal("Text"):Connect(function()
-    local src = exec_textbox.Text
-    if src == "" then
-        highlight_label.Text = ""
-        exec_textbox.TextTransparency = 0
-        return
-    end
-    local ok, result = pcall(function()
-        return library:tokenize(src)
-    end)
-    if ok and result then
-        highlight_label.Text = result
-        exec_textbox.TextTransparency = 0.999
-    else
-        highlight_label.Text = ""
-        exec_textbox.TextTransparency = 0
-    end
-end)
+	-- the actual textbox is fully transparent text-wise so highlight_label shows through
+	local exec_textbox = library:create("TextBox", {
+		Parent = textbox_bg,
+		FontFace = library.font,
+		TextColor3 = rgb(238, 255, 255),
+		TextTransparency = 0.999, -- nearly invisible so highlight label shows, but caret/selection still works
+		BorderColor3 = rgb(0, 0, 0),
+		Text = "",
+		PlaceholderText = "-- thank you for using comet.wtf",
+		PlaceholderColor3 = rgb(84, 110, 122),
+		Size = dim2(1, -10, 1, -10),
+		Position = dim2(0, 5, 0, 5),
+		BorderSizePixel = 0,
+		BackgroundTransparency = 1,
+		TextXAlignment = Enum.TextXAlignment.Left,
+		TextYAlignment = Enum.TextYAlignment.Top,
+		MultiLine = true,
+		ClearTextOnFocus = false,
+		TextWrapped = true,
+		ZIndex = 4,
+		TextSize = 12,
+		BackgroundColor3 = rgb(255, 255, 255),
+	})
 
-exec_section:button_holder({})
+	library:create("UIStroke", {
+		Parent = exec_textbox,
+		LineJoinMode = Enum.LineJoinMode.Miter,
+	})
 
-exec_section:button({
-    name = "Execute",
-    callback = function()
-        local code = exec_textbox.Text
-        if code == "" then return end
+	exec_textbox:GetPropertyChangedSignal("Text"):Connect(function()
+		local src = exec_textbox.Text
+		if src == "" then
+			highlight_label.Text = ""
+			return
+		end
+		local ok, result = pcall(function()
+			return library:tokenize(src)
+		end)
+		highlight_label.Text = ok and result or library:escape_rich(src)
+	end)
 
-        task.spawn(function()
-            local fn, err = loadstring(code)
-            if not fn then
-                library:notification({
-                    text = "Syntax error: " .. tostring(err),
-                    time = 5
-                })
-                return
-            end
+	exec_section:button_holder({})
 
-            local ok, run_err = xpcall(fn, function(e)
-                return debug.traceback(e, 2)
-            end)
+	exec_section:button({
+		name = "Execute",
+		callback = function()
+			local code = exec_textbox.Text
+			if code == "" then return end
 
-            if not ok then
-                library:notification({
-                    text = "Runtime error: " .. tostring(run_err),
-                    time = 5
-                })
-            end
-        end)
-    end
-})
+			task.spawn(function()
+				local fn, err = loadstring(code)
+				if not fn then
+					library:notification({
+						text = "Syntax error: " .. tostring(err),
+						time = 5
+					})
+					return
+				end
 
-exec_section:button({
-    name = "Clear",
-    callback = function()
-        exec_textbox.Text = ""
-        highlight_label.Text = ""
-        exec_textbox.TextTransparency = 0
-    end
-})
+				local ok, run_err = xpcall(fn, function(e)
+					return debug.traceback(e, 2)
+				end)
 
-exec_section:button_holder({})
+				if not ok then
+					library:notification({
+						text = "Runtime error: " .. tostring(run_err),
+						time = 5
+					})
+				end
+			end)
+		end
+	})
 
-exec_section:button({
-    name = "Open File",
-    callback = function()
-        makefolder("cometwtf/scripts")
-        local files = listfiles("cometwtf/scripts")
+	exec_section:button({
+		name = "Clear",
+		callback = function()
+			exec_textbox.Text = ""
+			highlight_label.Text = ""
+		end
+	})
 
-        if #files == 0 then
-            library:notification({
-                text = "No scripts found in cometwtf/scripts",
-                time = 3
-            })
-            return
-        end
+	exec_section:button_holder({})
 
-        local content = readfile(files[1])
-        exec_textbox.Text = content
-    end
-})
+	exec_section:button({
+		name = "Open File",
+		callback = function()
+			makefolder("cometwtf/scripts")
+			local files = listfiles("cometwtf/scripts")
 
-exec_section:button({
-    name = "Load from Clipboard",
-    callback = function()
-        local ok, content = pcall(getclipboard)
+			if #files == 0 then
+				library:notification({
+					text = "No scripts found in cometwtf/scripts",
+					time = 3
+				})
+				return
+			end
 
-        if ok and content and content ~= "" then
-            exec_textbox.Text = content
-        else
-            library:notification({
-                text = "Clipboard is empty or unavailable",
-                time = 3
-            })
-        end
-    end
-})
+			local content = readfile(files[1])
+			exec_textbox.Text = content
+		end
+	})
+
+	exec_section:button({
+		name = "Load from Clipboard",
+		callback = function()
+			local ok, content = pcall(getclipboard)
+
+			if ok and content and content ~= "" then
+				exec_textbox.Text = content
+			else
+				library:notification({
+					text = "Clipboard is empty or unavailable",
+					time = 3
+				})
+			end
+		end
+	})
 
 	-- cfg holder
 	local holder = library:panel({
