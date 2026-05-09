@@ -1,5 +1,5 @@
 -- a dumbass leaked source so i edited ( COMET EDITION )
-print("sup")
+
 -- variables
 local uis = cloneref(game:GetService("UserInputService"))
 local players = cloneref(game:GetService("Players"))
@@ -64,10 +64,6 @@ local insert = table.insert
 local find = table.find 
 local remove = table.remove
 local concat = table.concat
-
-local 
-
--- extra stuff for devs
 local printtestingforglobals = true 
 
 -- executor token shit
@@ -603,12 +599,13 @@ function library:executorinit()
 
 		if status == "supported" then
 			table.insert(supported, globalName)
+			EXECUTOR_GLOBALS[globalName] = true
 			if printtestingforglobals then
 				print("✅ " .. globalName .. " is supported")
 			end
 		else
 			table.insert(unsupported, globalName)
-			
+EXECUTOR_GLOBALS[globalName] = false
 			if printtestingforglobals then
 				print("❌ " .. globalName .. " is unsupported")
 			end
@@ -640,7 +637,6 @@ function library:executorinit()
 		path = filepath
 	}
 end
-
 library:executorinit()
 
 function library:escape_rich(s)
