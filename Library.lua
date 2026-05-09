@@ -516,7 +516,7 @@
             end
 		end
 		library:setuplockui()
-		
+
 		function library:round(number, float) 
 			local multiplier = 1 / (float or 1)
 
@@ -1282,7 +1282,7 @@
     library:tween(blur, {Size = bool and (flags["Blur Size"] or 7) or 0})
 
     dock_outline.Visible = bool;
-    library:mousestuff(not bool) -- lock UI when menu is hidden, unlock when visible
+    library:mousestuff(bool) -- lock UI when menu is hidden, unlock when visible
 
     sgui.Enabled = true
     notif_holder.Enabled = true
