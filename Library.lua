@@ -3348,8 +3348,7 @@ function library:multi_section(options)
 		Parent = self.holder,
 		Name = "",
 		BorderColor3 = rgb(0, 0, 0),
-		Size = dim2(1, 0, 0, 0),
-		AutomaticSize = Enum.AutomaticSize.Y,
+		Size = dim2(1, 0, 1, 0),
 		BorderSizePixel = 0,
 		BackgroundColor3 = themes.preset.inline
 	}) library:apply_theme(section, "inline", "BackgroundColor3")
@@ -3359,8 +3358,7 @@ function library:multi_section(options)
 		Name = "",
 		Position = dim2(0, 1, 0, 1),
 		BorderColor3 = rgb(0, 0, 0),
-		Size = dim2(1, -2, 0, 0),
-		AutomaticSize = Enum.AutomaticSize.Y,
+		Size = dim2(1, -2, 1, -2),
 		BorderSizePixel = 0,
 		BackgroundColor3 = themes.preset.outline
 	}) library:apply_theme(inline, "outline", "BackgroundColor3") 
@@ -3368,11 +3366,10 @@ function library:multi_section(options)
 	local __background = library:create("Frame", {
 		Parent = inline,
 		Name = "",
-		ClipsDescendants = false,
+		ClipsDescendants = true,
 		Position = dim2(0, 1, 0, 1),
 		BorderColor3 = rgb(0, 0, 0),
-		Size = dim2(1, -2, 0, 0),
-		AutomaticSize = Enum.AutomaticSize.Y,
+		Size = dim2(1, -2, 1, -2),
 		BorderSizePixel = 0,
 		ZIndex = 1,
 		BackgroundColor3 = rgb(255, 255, 255)
@@ -3388,19 +3385,19 @@ function library:multi_section(options)
 		BackgroundColor3 = themes.preset.accent
 	}) library:apply_theme(accent, "accent", "BackgroundColor3")
 
-	library:create("UIGradient", {
+	local UIGradient = library:create("UIGradient", {
 		Parent = accent,
 		Name = "",
 		Rotation = 90,
 		Color = rgbseq{rgbkey(0, rgb(255, 255, 255)), rgbkey(1, rgb(167, 167, 167))}
 	}) 
 
-	library:create("UIGradient", {
+	local UIGradient = library:create("UIGradient", {
 		Parent = __background,
 		Name = "",
 		Rotation = 90,
 		Color = rgbseq{rgbkey(0, rgb(41, 41, 55)), rgbkey(1, rgb(35, 35, 47))}
-	}) library:apply_theme(_, "contrast", "Color") -- note: use the variable you assigned UIGradient to
+	}) library:apply_theme(UIGradient, "contrast", "Color") 
 
 	local tab_holder = library:create("Frame", {
 		Parent = __background,
@@ -3428,6 +3425,7 @@ function library:multi_section(options)
 			open = false, 
 		} 
 
+		-- Tab
 		local tabb = library:create("TextButton", {
 			Parent = tab_holder,
 			Name = "",
@@ -3476,13 +3474,14 @@ function library:multi_section(options)
 			BackgroundColor3 = rgb(255, 255, 255)
 		}) library:apply_theme(text, "accent", "TextColor3")
 
-		library:create("UIStroke", {
+		local UIStroke = library:create("UIStroke", {
 			Parent = text,
 			Name = "",
 			LineJoinMode = Enum.LineJoinMode.Miter
 		})
+		-- 
 
-		-- Auto-scaling scrolling content per tab
+		-- Element Handler
 		local ScrollingFrame = library:create("ScrollingFrame", {
 			Parent = __background,
 			Name = "",
@@ -3493,8 +3492,7 @@ function library:multi_section(options)
 			BottomImage = "rbxassetid://103468666327206",
 			AutomaticCanvasSize = Enum.AutomaticSize.Y,
 			ScrollBarThickness = 2,
-			Size = dim2(1, 0, 0, 0),
-			AutomaticSize = Enum.AutomaticSize.Y,
+			Size = dim2(1, 0, 1, -20),
 			Visible = false, 
 			BackgroundTransparency = 1,
 			Position = dim2(0, 0, 0, 24),
@@ -3509,12 +3507,11 @@ function library:multi_section(options)
 			Name = "",
 			BorderColor3 = rgb(0, 0, 0),
 			Size = dim2(1, 0, 0, 0),
-			AutomaticSize = Enum.AutomaticSize.Y,
 			BorderSizePixel = 0,
 			BackgroundColor3 = rgb(255, 255, 255)
 		}) multi.holder = elements
 
-		library:create("UIListLayout", {
+		local UIListLayout = library:create("UIListLayout", {
 			Parent = elements,
 			Name = "",
 			SortOrder = Enum.SortOrder.LayoutOrder,
@@ -3522,12 +3519,12 @@ function library:multi_section(options)
 			Padding = dim(0, 4)
 		})
 
-		library:create("UIPadding", {
+		local UIPadding = library:create("UIPadding", {
 			Parent = ScrollingFrame,
 			Name = "",
-			PaddingBottom = dim(0, 6),
-			PaddingTop = dim(0, 2),
+			PaddingBottom = dim(0, 60)
 		})
+		--
 
 		function multi:open_tab(bool) 
 			ScrollingFrame.Visible = bool 
@@ -3556,7 +3553,7 @@ function library:multi_section(options)
 	cfg.sections[1]:open_tab(true)
 
 	return unpack(cfg.sections)
-end
+end 
 
 function library:section(options)
 	local cfg = {
@@ -3567,8 +3564,7 @@ function library:section(options)
 		Parent = self.holder,
 		Name = "\0",
 		BorderColor3 = rgb(0, 0, 0),
-		Size = dim2(1, 0, 0, 0),
-		AutomaticSize = Enum.AutomaticSize.Y,
+		Size = dim2(1, 0, 1, 0),
 		BorderSizePixel = 0,
 		BackgroundColor3 = themes.preset.inline
 	}) library:apply_theme(section, "inline", "BackgroundColor3") 
@@ -3578,8 +3574,7 @@ function library:section(options)
 		Name = "\0",
 		Position = dim2(0, 1, 0, 1),
 		BorderColor3 = rgb(0, 0, 0),
-		Size = dim2(1, -2, 0, 0),
-		AutomaticSize = Enum.AutomaticSize.Y,
+		Size = dim2(1, -2, 1, -2),
 		BorderSizePixel = 0,
 		BackgroundColor3 = themes.preset.outline
 	}) library:apply_theme(inline, "outline", "BackgroundColor3") 
@@ -3589,8 +3584,7 @@ function library:section(options)
 		Name = "\0",
 		Position = dim2(0, 1, 0, 1),
 		BorderColor3 = rgb(0, 0, 0),
-		Size = dim2(1, -2, 0, 0),
-		AutomaticSize = Enum.AutomaticSize.Y,
+		Size = dim2(1, -2, 1, -2),
 		BorderSizePixel = 0,
 		BackgroundColor3 = rgb(255, 255, 255)
 	})
@@ -3642,7 +3636,6 @@ function library:section(options)
 		}
 	}) library:apply_theme(UIGradient, "contrast", "Color") 
 
-	-- Scrolling frame that auto-sizes
 	local ScrollingFrame = library:create("ScrollingFrame", {
 		Parent = background,
 		ScrollBarImageColor3 = themes.preset.accent,
@@ -3652,8 +3645,7 @@ function library:section(options)
 		MidImage = "rbxassetid://103468666327206",
 		TopImage = "rbxassetid://103468666327206",
 		BottomImage = "rbxassetid://103468666327206",
-		Size = dim2(1, 0, 0, 0),
-		AutomaticSize = Enum.AutomaticSize.Y,
+		Size = dim2(1, 0, 1, -20),
 		BackgroundTransparency = 1,
 		Position = dim2(0, 0, 0, 20),
 		BackgroundColor3 = rgb(255, 255, 255),
@@ -3675,7 +3667,6 @@ function library:section(options)
 		Name = "\0",
 		BorderColor3 = rgb(0, 0, 0),
 		Size = dim2(1, 0, 0, 0),
-		AutomaticSize = Enum.AutomaticSize.Y,
 		BorderSizePixel = 0,
 		BackgroundColor3 = rgb(255, 255, 255)
 	})
@@ -3690,8 +3681,7 @@ function library:section(options)
 
 	library:create("UIPadding", {
 		Parent = ScrollingFrame,
-		PaddingBottom = dim(0, 6),
-		PaddingTop = dim(0, 2),
+		PaddingBottom = dim(0, 10)
 	})
 
 	return setmetatable(cfg, library)
