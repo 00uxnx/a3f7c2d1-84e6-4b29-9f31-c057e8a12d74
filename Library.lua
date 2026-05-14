@@ -1,5 +1,5 @@
 -- a dumbass leaked source so i edited ( COMET EDITION )
-print("lib 2.5")
+print("lib 2.2")
 -- variables
 local uis = cloneref(game:GetService("UserInputService"))
 local players = cloneref(game:GetService("Players"))
@@ -3401,7 +3401,6 @@ function library:multi_section(options)
 		Color = rgbseq{rgbkey(0, rgb(41, 41, 55)), rgbkey(1, rgb(35, 35, 47))}
 	}) library:apply_theme(bgGradient, "contrast", "Color")
 
-	-- tab strip
 	local tab_holder = library:create("Frame", {
 		Parent = __background,
 		Name = "",
@@ -3480,7 +3479,6 @@ function library:multi_section(options)
 			LineJoinMode = Enum.LineJoinMode.Miter
 		})
 
-		-- each tab's content, auto-sizes
 		local content_frame = library:create("Frame", {
 			Parent = __background,
 			Name = "",
@@ -3517,7 +3515,7 @@ function library:multi_section(options)
 			Parent = elements,
 			Name = "",
 			PaddingTop = dim(0, 5),
-			PaddingBottom = dim(0, 5),
+			PaddingBottom = dim(0, 8),
 			PaddingLeft = dim(0, 4),
 			PaddingRight = dim(0, 4),
 		})
@@ -3642,7 +3640,6 @@ function library:section(options)
 		LineJoinMode = Enum.LineJoinMode.Miter
 	})
 
-	-- content area, fully auto-sizes with elements
 	local content_outline = library:create("Frame", {
 		Parent = background,
 		Name = "\0",
@@ -3707,13 +3704,14 @@ function library:section(options)
 	library:create("UIPadding", {
 		Parent = elements,
 		PaddingTop = dim(0, 5),
-		PaddingBottom = dim(0, 5),
+		PaddingBottom = dim(0, 8),
 		PaddingLeft = dim(0, 4),
 		PaddingRight = dim(0, 4),
 	})
 
 	return setmetatable(cfg, library)
 end
+
 
 function library:slider(options)
 	local cfg = {
