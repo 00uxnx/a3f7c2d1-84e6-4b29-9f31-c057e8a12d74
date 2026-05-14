@@ -1,5 +1,5 @@
 -- a dumbass leaked source so i edited ( COMET EDITION )
-print("lib 2.2")
+print("lib 2.5")
 -- variables
 local uis = cloneref(game:GetService("UserInputService"))
 local players = cloneref(game:GetService("Players"))
@@ -3340,7 +3340,7 @@ end
 
 function library:multi_section(options)
 	local cfg = {
-		names = options.names or {"First", "Second", "Third"}, 
+		names = options.names or {"First", "Second", "Third"},
 		sections = {},
 	}
 
@@ -3348,7 +3348,8 @@ function library:multi_section(options)
 		Parent = self.holder,
 		Name = "",
 		BorderColor3 = rgb(0, 0, 0),
-		Size = dim2(1, 0, 1, 0),
+		Size = dim2(1, 0, 0, 0),
+		AutomaticSize = Enum.AutomaticSize.Y,
 		BorderSizePixel = 0,
 		BackgroundColor3 = themes.preset.inline
 	}) library:apply_theme(section, "inline", "BackgroundColor3")
@@ -3358,18 +3359,19 @@ function library:multi_section(options)
 		Name = "",
 		Position = dim2(0, 1, 0, 1),
 		BorderColor3 = rgb(0, 0, 0),
-		Size = dim2(1, -2, 1, -2),
+		Size = dim2(1, -2, 0, 0),
+		AutomaticSize = Enum.AutomaticSize.Y,
 		BorderSizePixel = 0,
 		BackgroundColor3 = themes.preset.outline
-	}) library:apply_theme(inline, "outline", "BackgroundColor3") 
+	}) library:apply_theme(inline, "outline", "BackgroundColor3")
 
 	local __background = library:create("Frame", {
 		Parent = inline,
 		Name = "",
-		ClipsDescendants = true,
 		Position = dim2(0, 1, 0, 1),
 		BorderColor3 = rgb(0, 0, 0),
-		Size = dim2(1, -2, 1, -2),
+		Size = dim2(1, -2, 0, 0),
+		AutomaticSize = Enum.AutomaticSize.Y,
 		BorderSizePixel = 0,
 		ZIndex = 1,
 		BackgroundColor3 = rgb(255, 255, 255)
@@ -3385,31 +3387,32 @@ function library:multi_section(options)
 		BackgroundColor3 = themes.preset.accent
 	}) library:apply_theme(accent, "accent", "BackgroundColor3")
 
-	local UIGradient = library:create("UIGradient", {
+	library:create("UIGradient", {
 		Parent = accent,
 		Name = "",
 		Rotation = 90,
 		Color = rgbseq{rgbkey(0, rgb(255, 255, 255)), rgbkey(1, rgb(167, 167, 167))}
-	}) 
+	})
 
-	local UIGradient = library:create("UIGradient", {
+	local bgGradient = library:create("UIGradient", {
 		Parent = __background,
 		Name = "",
 		Rotation = 90,
 		Color = rgbseq{rgbkey(0, rgb(41, 41, 55)), rgbkey(1, rgb(35, 35, 47))}
-	}) library:apply_theme(UIGradient, "contrast", "Color") 
+	}) library:apply_theme(bgGradient, "contrast", "Color")
 
+	-- tab strip
 	local tab_holder = library:create("Frame", {
 		Parent = __background,
 		Name = "",
 		ClipsDescendants = true,
 		BackgroundTransparency = 1,
-		Position = dim2(0, -1, 0, 0),
+		Position = dim2(0, 0, 0, 0),
 		BorderColor3 = rgb(0, 0, 0),
-		Size = dim2(1, 2, 0, 21),
+		Size = dim2(1, 0, 0, 22),
 		BorderSizePixel = 0,
 		BackgroundColor3 = rgb(255, 255, 255)
-	}) 
+	})
 
 	library:create("UIListLayout", {
 		Parent = tab_holder,
@@ -3420,12 +3423,9 @@ function library:multi_section(options)
 		SortOrder = Enum.SortOrder.LayoutOrder
 	})
 
-	for _, tab in next, cfg.names do 
-		local multi = {
-			open = false, 
-		} 
+	for _, tab in next, cfg.names do
+		local multi = { open = false }
 
-		-- Tab
 		local tabb = library:create("TextButton", {
 			Parent = tab_holder,
 			Name = "",
@@ -3439,9 +3439,9 @@ function library:multi_section(options)
 			ZIndex = 1,
 			TextSize = 12,
 			BackgroundColor3 = themes.preset.outline
-		}) library:apply_theme(tabb, "outline", "BackgroundColor3") 
+		}) library:apply_theme(tabb, "outline", "BackgroundColor3")
 
-		local background = library:create("Frame", {
+		local tabBg = library:create("Frame", {
 			Parent = tabb,
 			Name = "",
 			Size = dim2(1, 0, 1, -2),
@@ -3452,15 +3452,15 @@ function library:multi_section(options)
 			BackgroundColor3 = rgb(255, 255, 255)
 		})
 
-		local UIGradient = library:create("UIGradient", {
-			Parent = background,
+		local tabGradient = library:create("UIGradient", {
+			Parent = tabBg,
 			Name = "",
 			Rotation = 90,
 			Color = rgbseq{rgbkey(0, rgb(41, 41, 55)), rgbkey(1, rgb(35, 35, 47))}
-		}) library:apply_theme(UIGradient, "contrast", "Color")
+		}) library:apply_theme(tabGradient, "contrast", "Color")
 
-		local text = library:create("TextLabel", {
-			Parent = background,
+		local tabText = library:create("TextLabel", {
+			Parent = tabBg,
 			Name = "",
 			FontFace = library.font,
 			TextColor3 = themes.preset.text,
@@ -3472,46 +3472,40 @@ function library:multi_section(options)
 			AutomaticSize = Enum.AutomaticSize.X,
 			TextSize = 12,
 			BackgroundColor3 = rgb(255, 255, 255)
-		}) library:apply_theme(text, "accent", "TextColor3")
+		}) library:apply_theme(tabText, "accent", "TextColor3")
 
-		local UIStroke = library:create("UIStroke", {
-			Parent = text,
+		library:create("UIStroke", {
+			Parent = tabText,
 			Name = "",
 			LineJoinMode = Enum.LineJoinMode.Miter
 		})
-		-- 
 
-		-- Element Handler
-		local ScrollingFrame = library:create("ScrollingFrame", {
+		-- each tab's content, auto-sizes
+		local content_frame = library:create("Frame", {
 			Parent = __background,
 			Name = "",
-			ScrollBarImageColor3 = themes.preset.accent,
-			Active = true,
-			MidImage = "rbxassetid://103468666327206",
-			TopImage = "rbxassetid://103468666327206",
-			BottomImage = "rbxassetid://103468666327206",
-			AutomaticCanvasSize = Enum.AutomaticSize.Y,
-			ScrollBarThickness = 2,
-			Size = dim2(1, 0, 1, -20),
-			Visible = false, 
-			BackgroundTransparency = 1,
-			Position = dim2(0, 0, 0, 24),
-			BackgroundColor3 = rgb(255, 255, 255),
+			Position = dim2(0, 0, 0, 22),
 			BorderColor3 = rgb(0, 0, 0),
+			Size = dim2(1, 0, 0, 0),
+			AutomaticSize = Enum.AutomaticSize.Y,
+			Visible = false,
+			BackgroundTransparency = 1,
 			BorderSizePixel = 0,
-			CanvasSize = dim2(0, 0, 0, 0)
-		}) library:apply_theme(ScrollingFrame, "accent", "ScrollBarImageColor3") 
+			BackgroundColor3 = rgb(255, 255, 255)
+		})
 
 		local elements = library:create("Frame", {
-			Parent = ScrollingFrame,
+			Parent = content_frame,
 			Name = "",
 			BorderColor3 = rgb(0, 0, 0),
 			Size = dim2(1, 0, 0, 0),
+			AutomaticSize = Enum.AutomaticSize.Y,
 			BorderSizePixel = 0,
+			BackgroundTransparency = 1,
 			BackgroundColor3 = rgb(255, 255, 255)
 		}) multi.holder = elements
 
-		local UIListLayout = library:create("UIListLayout", {
+		library:create("UIListLayout", {
 			Parent = elements,
 			Name = "",
 			SortOrder = Enum.SortOrder.LayoutOrder,
@@ -3519,41 +3513,41 @@ function library:multi_section(options)
 			Padding = dim(0, 4)
 		})
 
-		local UIPadding = library:create("UIPadding", {
-			Parent = ScrollingFrame,
+		library:create("UIPadding", {
+			Parent = elements,
 			Name = "",
-			PaddingBottom = dim(0, 60)
+			PaddingTop = dim(0, 5),
+			PaddingBottom = dim(0, 5),
+			PaddingLeft = dim(0, 4),
+			PaddingRight = dim(0, 4),
 		})
-		--
 
-		function multi:open_tab(bool) 
-			ScrollingFrame.Visible = bool 
-			UIGradient.Rotation = bool and -90 or 90
+		function multi:open_tab(bool)
+			content_frame.Visible = bool
+			tabGradient.Rotation = bool and -90 or 90
 			tabb.Size = dim2(0, 0, 1, bool and 1 or 0)
-			text.TextColor3 = bool and themes.preset.accent or themes.preset.text
+			tabText.TextColor3 = bool and themes.preset.accent or themes.preset.text
 		end
 
 		library:connection(tabb.MouseButton1Click, function()
-			for _, multi_s in next, cfg.sections do 
+			for _, multi_s in next, cfg.sections do
 				multi_s:open_tab(false)
 			end
-
-			if library.current_element_open then 
+			if library.current_element_open then
 				library.current_element_open.set_visible(false)
-				library.current_element_open.open = false 
-				library.current_element_open = nil 
+				library.current_element_open.open = false
+				library.current_element_open = nil
 			end
-
-			multi:open_tab(true) 
+			multi:open_tab(true)
 		end)
 
 		cfg.sections[#cfg.sections + 1] = setmetatable(multi, library)
-	end 
+	end
 
 	cfg.sections[1]:open_tab(true)
 
 	return unpack(cfg.sections)
-end 
+end
 
 function library:section(options)
 	local cfg = {
@@ -3564,33 +3558,72 @@ function library:section(options)
 		Parent = self.holder,
 		Name = "\0",
 		BorderColor3 = rgb(0, 0, 0),
-		Size = dim2(1, 0, 1, 0),
+		Size = dim2(1, 0, 0, 0),
+		AutomaticSize = Enum.AutomaticSize.Y,
 		BorderSizePixel = 0,
 		BackgroundColor3 = themes.preset.inline
-	}) library:apply_theme(section, "inline", "BackgroundColor3") 
+	}) library:apply_theme(section, "inline", "BackgroundColor3")
 
 	local inline = library:create("Frame", {
 		Parent = section,
 		Name = "\0",
 		Position = dim2(0, 1, 0, 1),
 		BorderColor3 = rgb(0, 0, 0),
-		Size = dim2(1, -2, 1, -2),
+		Size = dim2(1, -2, 0, 0),
+		AutomaticSize = Enum.AutomaticSize.Y,
 		BorderSizePixel = 0,
 		BackgroundColor3 = themes.preset.outline
-	}) library:apply_theme(inline, "outline", "BackgroundColor3") 
+	}) library:apply_theme(inline, "outline", "BackgroundColor3")
 
 	local background = library:create("Frame", {
 		Parent = inline,
 		Name = "\0",
 		Position = dim2(0, 1, 0, 1),
 		BorderColor3 = rgb(0, 0, 0),
-		Size = dim2(1, -2, 1, -2),
+		Size = dim2(1, -2, 0, 0),
+		AutomaticSize = Enum.AutomaticSize.Y,
 		BorderSizePixel = 0,
 		BackgroundColor3 = rgb(255, 255, 255)
 	})
 
-	local text = library:create("TextLabel", {
+	local header = library:create("Frame", {
 		Parent = background,
+		Name = "\0",
+		BorderColor3 = rgb(0, 0, 0),
+		Size = dim2(1, 0, 0, 20),
+		BorderSizePixel = 0,
+		BackgroundColor3 = rgb(255, 255, 255)
+	})
+
+	local accent = library:create("Frame", {
+		Parent = header,
+		Name = "\0",
+		BorderColor3 = rgb(0, 0, 0),
+		Size = dim2(1, 0, 0, 2),
+		BorderSizePixel = 0,
+		BackgroundColor3 = themes.preset.accent
+	}) library:apply_theme(accent, "accent", "BackgroundColor3")
+
+	library:create("UIGradient", {
+		Parent = accent,
+		Rotation = 90,
+		Color = rgbseq{
+			rgbkey(0, rgb(255, 255, 255)),
+			rgbkey(1, rgb(167, 167, 167))
+		}
+	})
+
+	local UIGradientBG = library:create("UIGradient", {
+		Parent = header,
+		Rotation = 90,
+		Color = rgbseq{
+			rgbkey(0, rgb(41, 41, 55)),
+			rgbkey(1, rgb(35, 35, 47))
+		}
+	}) library:apply_theme(UIGradientBG, "contrast", "Color")
+
+	local text = library:create("TextLabel", {
+		Parent = header,
 		FontFace = library.font,
 		TextColor3 = themes.preset.text,
 		BorderColor3 = rgb(0, 0, 0),
@@ -3609,68 +3642,60 @@ function library:section(options)
 		LineJoinMode = Enum.LineJoinMode.Miter
 	})
 
-	local accent = library:create("Frame", {
+	-- content area, fully auto-sizes with elements
+	local content_outline = library:create("Frame", {
 		Parent = background,
 		Name = "\0",
+		Position = dim2(0, 0, 0, 20),
 		BorderColor3 = rgb(0, 0, 0),
-		Size = dim2(1, 0, 0, 2),
+		Size = dim2(1, 0, 0, 0),
+		AutomaticSize = Enum.AutomaticSize.Y,
 		BorderSizePixel = 0,
-		BackgroundColor3 = themes.preset.accent
-	}) library:apply_theme(accent, "accent", "BackgroundColor3") 
+		BackgroundColor3 = themes.preset.inline
+	}) library:apply_theme(content_outline, "inline", "BackgroundColor3")
 
-	local UIGradient = library:create("UIGradient", {
-		Parent = accent,
-		Rotation = 90,
-		Color = rgbseq{
-			rgbkey(0, rgb(255, 255, 255)),
-			rgbkey(1, rgb(167, 167, 167))
-		}
+	local content_inline = library:create("Frame", {
+		Parent = content_outline,
+		Name = "\0",
+		Position = dim2(0, 1, 0, 1),
+		BorderColor3 = rgb(0, 0, 0),
+		Size = dim2(1, -2, 0, 0),
+		AutomaticSize = Enum.AutomaticSize.Y,
+		BorderSizePixel = 0,
+		BackgroundColor3 = themes.preset.outline
+	}) library:apply_theme(content_inline, "outline", "BackgroundColor3")
+
+	local content_bg = library:create("Frame", {
+		Parent = content_inline,
+		Name = "\0",
+		Position = dim2(0, 1, 0, 1),
+		BorderColor3 = rgb(0, 0, 0),
+		Size = dim2(1, -2, 0, 0),
+		AutomaticSize = Enum.AutomaticSize.Y,
+		BorderSizePixel = 0,
+		BackgroundColor3 = rgb(255, 255, 255)
 	})
 
-	local UIGradient = library:create("UIGradient", {
-		Parent = background,
+	local UIGradientContent = library:create("UIGradient", {
+		Parent = content_bg,
 		Rotation = 90,
 		Color = rgbseq{
 			rgbkey(0, rgb(41, 41, 55)),
 			rgbkey(1, rgb(35, 35, 47))
 		}
-	}) library:apply_theme(UIGradient, "contrast", "Color") 
-
-	local ScrollingFrame = library:create("ScrollingFrame", {
-		Parent = background,
-		ScrollBarImageColor3 = themes.preset.accent,
-		Active = true,
-		AutomaticCanvasSize = Enum.AutomaticSize.Y,
-		ScrollBarThickness = 2,
-		MidImage = "rbxassetid://103468666327206",
-		TopImage = "rbxassetid://103468666327206",
-		BottomImage = "rbxassetid://103468666327206",
-		Size = dim2(1, 0, 1, -20),
-		BackgroundTransparency = 1,
-		Position = dim2(0, 0, 0, 20),
-		BackgroundColor3 = rgb(255, 255, 255),
-		BorderColor3 = rgb(0, 0, 0),
-		BorderSizePixel = 0,
-		CanvasSize = dim2(0, 0, 0, 0)
-	}) library:apply_theme(ScrollingFrame, "accent", "ScrollBarImageColor3") 
-
-	ScrollingFrame:GetPropertyChangedSignal("CanvasPosition"):Connect(function()
-		if library.current_element_open then 
-			library.current_element_open.set_visible(false)
-			library.current_element_open.open = false 
-			library.current_element_open = nil
-		end
-	end) 
+	}) library:apply_theme(UIGradientContent, "contrast", "Color")
 
 	local elements = library:create("Frame", {
-		Parent = ScrollingFrame,
+		Parent = content_bg,
 		Name = "\0",
 		BorderColor3 = rgb(0, 0, 0),
 		Size = dim2(1, 0, 0, 0),
+		AutomaticSize = Enum.AutomaticSize.Y,
 		BorderSizePixel = 0,
+		BackgroundTransparency = 1,
 		BackgroundColor3 = rgb(255, 255, 255)
 	})
-	cfg.holder = elements 
+	cfg.holder = elements
 
 	library:create("UIListLayout", {
 		Parent = elements,
@@ -3680,8 +3705,11 @@ function library:section(options)
 	})
 
 	library:create("UIPadding", {
-		Parent = ScrollingFrame,
-		PaddingBottom = dim(0, 10)
+		Parent = elements,
+		PaddingTop = dim(0, 5),
+		PaddingBottom = dim(0, 5),
+		PaddingLeft = dim(0, 4),
+		PaddingRight = dim(0, 4),
 	})
 
 	return setmetatable(cfg, library)
